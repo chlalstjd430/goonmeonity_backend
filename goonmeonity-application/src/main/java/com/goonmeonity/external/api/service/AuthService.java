@@ -4,6 +4,7 @@ import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.domain.repository.user.UserRepository;
 import com.goonmeonity.domain.service.user.dto.UserInfo;
 import com.goonmeonity.domain.service.user.error.EmailIsAlreadyExistError;
+import com.goonmeonity.domain.service.user.error.NicknameIsAlreadyExistError;
 import com.goonmeonity.domain.service.user.function.SignUpUser;
 import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserEmail;
 import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserNickname;
@@ -14,16 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@NoArgsConstructor
 public class AuthService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private SignUpUser signUpUser;
+    private final SignUpUser signUpUser;
 
-    private CheckDuplicateUserEmail checkDuplicateUserEmail;
-    private CheckDuplicateUserNickname checkDuplicateUserNickname ;
-
-    @Autowired
+    private final CheckDuplicateUserEmail checkDuplicateUserEmail;
+    private final CheckDuplicateUserNickname checkDuplicateUserNickname;
+    
     public AuthService(UserRepository userRepository){
         this.userRepository = userRepository;
         this.signUpUser = new SignUpUser(userRepository);
@@ -56,7 +55,7 @@ public class AuthService {
     public CheckDuplicateResponse checkDuplicateNickname(String nickname){
         try {
             checkDuplicateUserNickname.verify(nickname);
-        }catch (EmailIsAlreadyExistError error){
+        }catch (NicknameIsAlreadyExistError error){
             return new CheckDuplicateResponse(false, "중복된 닉네임 입니다.");
         }
 
