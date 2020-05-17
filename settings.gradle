@@ -1,2 +1,4 @@
 rootProject.name = 'goonmeonity-backend'
-include 'goonmeonity-application','goonmeonity-domain-rds', 'goonmeonity-core'
+include('goonmeonity-application')
+include('goonmeonity-domain-rds')
+include('goonmeonity-core')
