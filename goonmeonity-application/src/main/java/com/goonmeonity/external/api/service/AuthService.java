@@ -44,7 +44,6 @@ public class AuthService {
     public SignInResponse signUpByEmail(SignUpRequest signUpRequest){
         checkDuplicateUserEmail.verify(signUpRequest.getEmail());
         checkDuplicateUserNickname.verify(signUpRequest.getNickname());
-
         User user = signUpUser.apply(
                 new User(
                         null,
