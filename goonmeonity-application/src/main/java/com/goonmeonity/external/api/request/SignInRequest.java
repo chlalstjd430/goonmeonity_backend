@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpRequest{
+public class SignInRequest {
     private String email;
     private String hashedPassword;
-    private String nickname;
 }

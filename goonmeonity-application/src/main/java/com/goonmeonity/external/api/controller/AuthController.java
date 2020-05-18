@@ -2,6 +2,7 @@ package com.goonmeonity.external.api.controller;
 
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.domain.service.user.dto.UserInfo;
+import com.goonmeonity.external.api.request.SignInRequest;
 import com.goonmeonity.external.api.request.SignUpRequest;
 import com.goonmeonity.external.api.response.CheckDuplicateResponse;
 import com.goonmeonity.external.api.response.SignInResponse;
@@ -30,9 +31,9 @@ public class AuthController {
     @ApiOperation("로그인")
     @PostMapping("/sign-in")
     @ResponseStatus(HttpStatus.OK)
-    public String signUp(){
+    public SignInResponse signUp(@RequestBody SignInRequest signIpRequest){
 
-        return "test";
+        return authService.signIn(signIpRequest);
     }
 
     @ApiOperation("액세스 토큰 재발급")
