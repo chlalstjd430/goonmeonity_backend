@@ -10,4 +10,6 @@ public interface UserRepository extends ExtendRepository<User> {
     boolean existsByEmail(String email);
 
     boolean existsByNickname(String nickname);
+
+    boolean existsById(long userId);
 }
