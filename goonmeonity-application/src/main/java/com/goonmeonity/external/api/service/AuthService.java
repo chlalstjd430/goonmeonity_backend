@@ -2,12 +2,15 @@ package com.goonmeonity.external.api.service;
 
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.domain.repository.user.UserRepository;
+import com.goonmeonity.domain.service.auth.JwtTokenProvider;
 import com.goonmeonity.domain.service.user.dto.UserInfo;
 import com.goonmeonity.domain.service.user.error.EmailIsAlreadyExistError;
 import com.goonmeonity.domain.service.user.error.NicknameIsAlreadyExistError;
+import com.goonmeonity.domain.service.user.function.FindUserById;
 import com.goonmeonity.domain.service.user.function.SignUpUser;
 import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserEmail;
 import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserNickname;
+import com.goonmeonity.domain.service.user.validator.CheckUserExist;
 import com.goonmeonity.external.api.request.SignUpRequest;
 import com.goonmeonity.external.api.response.CheckDuplicateResponse;
 import lombok.NoArgsConstructor;
@@ -16,30 +19,58 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+    @Value("${jwt.secret}")
+    private String secretKey;
+    @Value("#{T(Integer).parseInt('${jwt.expiration}')}")
+    private Integer expiration;
     private final UserRepository userRepository;
 
     private final SignUpUser signUpUser;
+    private final FindUserById findUserById;
 
     private final CheckDuplicateUserEmail checkDuplicateUserEmail;
     private final CheckDuplicateUserNickname checkDuplicateUserNickname;
+    private final CheckUserExist checkUserExist;
     
     public AuthService(UserRepository userRepository){
         this.userRepository = userRepository;
         this.signUpUser = new SignUpUser(userRepository);
+        this.findUserById = new FindUserById(userRepository);
         this.checkDuplicateUserNickname = new CheckDuplicateUserNickname(userRepository);
         this.checkDuplicateUserEmail = new CheckDuplicateUserEmail(userRepository);
+        this.checkUserExist = new CheckUserExist(userRepository);
     }
 
-    public UserInfo signUpByEmail(SignUpRequest signUpRequest){
+    public SignInResponse signUpByEmail(SignUpRequest signUpRequest){
         checkDuplicateUserEmail.verify(signUpRequest.getEmail());
         checkDuplicateUserNickname.verify(signUpRequest.getNickname());
 
         User user = signUpUser.apply(
-                new User(null, signUpRequest.getEmail(), signUpRequest.getNickname(), signUpRequest.getHashedPassword()
+                new User(
+                        null,
+                        signUpRequest.getEmail(),
+                        signUpRequest.getNickname(),
+                        signUpRequest.getHashedPassword()
                 )
         );
 
-        return new UserInfo(user);
+        return new SignInResponse(
+                new UserInfo(user),
+                JwtTokenProvider.getInstance().generateAccessKey(user, secretKey, expiration),
+                JwtTokenProvider.getInstance().generateRefreshToken(user, secretKey)
+        );
+    }
+
+    public String refreshAccessToken(String refreshToken){
+        Claims claims = JwtTokenProvider.getInstance().decodingToken(refreshToken, secretKey);
+        long userId = JwtTokenProvider.getInstance().getUserIdByClaims(claims, "RefreshToken");
+        checkUserExist.verify(userId);
+
+        return JwtTokenProvider.getInstance().generateAccessKey(
+                findUserById.apply(userId),
+                secretKey,
+                expiration
+        );
     }
 
     public CheckDuplicateResponse checkDuplicateEmail(String email){
