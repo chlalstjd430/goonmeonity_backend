@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class SignInResponse{
     private UserInfo userInfo;
     private String accessToken;
