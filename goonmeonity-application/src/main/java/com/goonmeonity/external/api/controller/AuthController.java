@@ -32,7 +32,7 @@ public class AuthController {
     @ApiOperation("로그인")
     @PostMapping("/sign-in")
     @ResponseStatus(HttpStatus.OK)
-    public SignInResponse signUp(@RequestBody SignInRequest signIpRequest){
+    public SignInResponse signIn(@RequestBody SignInRequest signIpRequest){
 
         return authService.signIn(signIpRequest);
     }

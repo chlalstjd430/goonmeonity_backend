@@ -1,4 +1,4 @@
-bootJar {
+    bootJar {
     enabled = false
 }
 jar {
