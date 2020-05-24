@@ -3,6 +3,7 @@ package com.goonmeonity.external.api.service;
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.domain.repository.user.UserRepository;
 import com.goonmeonity.domain.service.auth.JwtTokenProvider;
+import com.goonmeonity.domain.service.auth.dto.AccessToken;
 import com.goonmeonity.domain.service.auth.dto.InputPasswordAndRealPassword;
 import com.goonmeonity.domain.service.auth.validator.CheckPassword;
 import com.goonmeonity.domain.service.user.dto.UserInfo;
@@ -81,7 +82,7 @@ public class AuthService {
         );
     }
 
-    public String refreshAccessToken(String refreshToken){
+    public AccessToken refreshAccessToken(String refreshToken){
         Claims claims = JwtTokenProvider.getInstance().decodingToken(refreshToken, secretKey);
         long userId = JwtTokenProvider.getInstance().getUserIdByClaims(claims, "RefreshToken");
         checkUserExistById.verify(userId);

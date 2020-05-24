@@ -1,6 +1,7 @@
 package com.goonmeonity.domain.service.auth;
 
 import com.goonmeonity.domain.entity.user.User;
+import com.goonmeonity.domain.service.auth.dto.AccessToken;
 import com.goonmeonity.domain.service.auth.error.TokenHasExpiredError;
 import com.goonmeonity.domain.service.auth.error.TokenIsInvalidError;
 import com.goonmeonity.domain.service.user.dto.UserInfo;
@@ -23,24 +24,26 @@ public class JwtTokenProvider {
         return InnerInstance.instance;
     }
 
-    public String generateAccessKey(User user, String secretKey, int expirationDate){
+    public AccessToken generateAccessKey(User user, String secretKey, int expirationDate){
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId().toString());
 
         return generateAccesskey(claims, secretKey, expirationDate);
     }
 
-    private String generateAccesskey(Map<String, Object> claims, String secretKey,int expirationDate){
+    private AccessToken generateAccesskey(Map<String, Object> claims, String secretKey,int expirationDate){
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + expirationDate);
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setClaims(claims)
                 .setSubject("AccessToken")
                 .setIssuedAt(now)
                 .setExpiration(expireDate)
                 .signWith(getSigningKey(secretKey))
                 .compact();
+
+        return new AccessToken(token, expireDate.getTime());
     }
 
     public String generateRefreshToken(User user, String secretKey){

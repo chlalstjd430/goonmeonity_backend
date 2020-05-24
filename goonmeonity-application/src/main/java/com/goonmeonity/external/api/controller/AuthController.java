@@ -1,6 +1,7 @@
 package com.goonmeonity.external.api.controller;
 
 import com.goonmeonity.domain.entity.user.User;
+import com.goonmeonity.domain.service.auth.dto.AccessToken;
 import com.goonmeonity.domain.service.user.dto.UserInfo;
 import com.goonmeonity.external.api.request.SignInRequest;
 import com.goonmeonity.external.api.request.SignUpRequest;
@@ -23,7 +24,7 @@ public class AuthController {
 
     @ApiOperation("회원가입")
     @PostMapping("/sign-up")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public SignInResponse signUp(@RequestBody SignUpRequest signUpRequest){
         return authService.signUpByEmail(signUpRequest);
     }
@@ -39,7 +40,7 @@ public class AuthController {
     @ApiOperation("액세스 토큰 재발급")
     @GetMapping("/access-token")
     @ResponseStatus(HttpStatus.OK)
-    public String refreshAccessToken(@RequestHeader String refreshToken){
+    public AccessToken refreshAccessToken(@RequestHeader String refreshToken){
         return authService.refreshAccessToken(refreshToken);
     }
 
