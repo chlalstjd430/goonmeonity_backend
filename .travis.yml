@@ -5,6 +5,7 @@ jdk:
 branches:
   only:
     - develop
+    - feature/*
 
 # Tavis CI 서버의 Home
 cache:
@@ -32,7 +33,7 @@ deploy:
   acl: private
   local_dir: deploy
   wait-until-deployed: true
-  
+
 notifications:
   email:
     recipients:
