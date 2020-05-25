@@ -26,10 +26,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-    @Value("${jwt.secret}")
-    private String secretKey;
-    @Value("#{T(Integer).parseInt('${jwt.expiration}')}")
-    private Integer expiration;
+    private String secretKey = "285EBCA0632782753C8803BA16DA1882960FE4D6C1043CE64B167AEF09C1CCE0";
+    private Integer expiration = 60000;
     private final UserRepository userRepository;
 
     private final SignUpUser signUpUser;
