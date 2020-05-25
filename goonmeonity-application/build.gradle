@@ -4,5 +4,5 @@ dependencies {
     implementation("io.springfox:springfox-spring-web:${swaggerVersion}")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+    runtimeOnly("mysql:mysql-connector-java")
 }
