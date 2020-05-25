@@ -18,14 +18,16 @@ import com.goonmeonity.domain.service.user.validator.CheckUserExistById;
 import com.goonmeonity.external.api.request.SignInRequest;
 import com.goonmeonity.external.api.request.SignUpRequest;
 import com.goonmeonity.external.api.response.CheckDuplicateResponse;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.goonmeonity.external.api.response.SignInResponse;
+import io.jsonwebtoken.Claims;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
     private String secretKey = "285EBCA0632782753C8803BA16DA1882960FE4D6C1043CE64B167AEF09C1CCE0";
     private Integer expiration = 60000;
+
     private final UserRepository userRepository;
 
     private final SignUpUser signUpUser;
