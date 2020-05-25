@@ -1,6 +1,8 @@
 package com.goonmeonity.domain.repository.user;
 
 import com.goonmeonity.domain.entity.user.User;
+import com.goonmeonity.domain.service.user.error.EmailIsAlreadyExistError;
+import com.goonmeonity.domain.service.user.error.UserNotExistError;
 import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserEmail;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -26,7 +28,7 @@ public class UserRepositoryTest {
         Assertions.assertThat(resultUser.getId()).isNotNull();
     }
 
-    @Test
+    @Test(expected = EmailIsAlreadyExistError.class)
     public void 이메일_중복검사_중복(){
         //given
         User user = signUp();
