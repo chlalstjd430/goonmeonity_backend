@@ -36,13 +36,13 @@ deploy:
       branch: develop
 
   - provider: codedeploy
-    access_key_id: $AWS_SECRET_KEY
+    access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
     bucket: goonmeonity-springboot-build
     key: goonmeonity-springboot-service.zip
     bundle_type: zip
-    application: goonmeonity-springboot-service
-    deployment_group: goonmeonity-springboot-service-group
+    application: goonmeonity-backend-service
+    deployment_group: goonmeonity-backend-service-group
     region: ap-northeast-2
     wait-until-deployed: true
     on:
@@ -52,4 +52,3 @@ notifications:
   email:
     recipients:
       - 'cms3136@gmail.com'
-
