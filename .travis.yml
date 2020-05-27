@@ -41,8 +41,8 @@ deploy:
     bucket: goonmeonity-springboot-build
     key: goonmeonity-springboot-service.zip
     bundle_type: zip
-    application: goonmeonity-springboot-service
-    deployment_group: goonmeonity-springboot-service-group
+    application: freelec-springboot2-webservice
+    deployment_group: freelec-springboot2-service-group
     region: ap-northeast-2
     wait-until-deployed: true
     on:
