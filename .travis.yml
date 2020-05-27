@@ -23,17 +23,30 @@ before_deploy:
   - mv goonmeonity-springboot-service.zip deploy/goonmeonity-springboot-service.zip
 
 deploy:
-  provider: s3
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  bucket: goonmeonity-springboot-build
-  region: ap-northeast-2
-  skip_cleanup: true
-  acl: private
-  local_dir: deploy
-  wait-until-deployed: true
-  on:
-    branch: develop
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: goonmeonity-springboot-build
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private
+    local_dir: deploy
+    wait-until-deployed: true
+    on:
+      branch: develop
+
+  - provider: codedeploy
+    access_key_id: $AWS_SECRET_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: goonmeonity-springboot-build
+    key: goonmeonity-springboot-service.zip
+    bundle_type: zip
+    application: freelec-springboot2-webservice
+    deployment_group: freelec-springboot2-service-group
+    region: ap-northeast-2
+    wait-until-deployed: true
+    on:
+      branch: develop
 
 notifications:
   email:

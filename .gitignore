@@ -135,7 +135,7 @@ gradle-app.setting
 
 ### Gradle Patch ###
 **/build/
-
+.gradle
 # End of https://www.gitignore.io/api/gradle,kotlin,intellij
 
 ### STS ###
