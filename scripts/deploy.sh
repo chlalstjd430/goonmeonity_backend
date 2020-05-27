@@ -2,7 +2,6 @@
 
 REPOSITORY=/home/ubuntu/app/goonmeonity_test2
 PROJECT_NAME=goonmeonity_backend
-
 echo "> build 파일 복사"
 
 cp $REPOSITORY/zip/*.jar $REPOSITORY/

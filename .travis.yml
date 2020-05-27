@@ -24,7 +24,7 @@ before_deploy:
   - cp goonmeonity-application/build/libs/*.jar before-deploy
   - cd before-deploy && zip -r before-deploy *
   - cd ../ && mkdir -p deploy
-  - mv before-deploy/before-deploy.zip deploy/goonmeonity-springboot-servie.zip
+  - mv before-deploy/before-deploy.zip deploy/goonmeonity-springboot-service.zip
 
 deploy:
   - provider: s3
@@ -55,4 +55,4 @@ deploy:
 notifications:
   email:
     recipients:
-      - 'cms3136@gmail.com'
+      - cms3136@gmail.com
