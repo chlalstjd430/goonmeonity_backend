@@ -9,7 +9,7 @@ cp $REPOSITORY/zip/*.jar $REPOSITORY/
 
 echo "> 현재 구동중인 애플리케이션 pid 확인"
 
-CURRENT_PID=$(pgrep -fl goonmeonity_backend | grep jar | awk '{print  $1}')
+CURRENT_PID=$(pgrep -fl goonmeonity-application-1.0 | grep jar | awk '{print  $1}')
 
 echo "현재 구동중인 애플리케이션 pid:" $CURRENT_PID
 
