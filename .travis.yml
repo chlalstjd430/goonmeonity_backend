@@ -23,7 +23,7 @@ before_deploy:
   - mv goonmeonity-springboot-service.zip deploy/goonmeonity-springboot-service.zip
 
 deploy:
-  -provider: s3
+  provider: s3
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
   bucket: goonmeonity-springboot-build
@@ -32,6 +32,8 @@ deploy:
   acl: private
   local_dir: deploy
   wait-until-deployed: true
+  on:
+    branch: develop
 
 notifications:
   email:
