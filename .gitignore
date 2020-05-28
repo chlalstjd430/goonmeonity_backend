@@ -9,7 +9,7 @@
 goonmmeonity-application/src/main/resource/
 
 # Properties
-application**.properties
+application-real-db.properties
 
 # User-specific stuff
 .idea
