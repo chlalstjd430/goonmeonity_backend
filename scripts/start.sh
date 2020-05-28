@@ -4,7 +4,7 @@ ABSPATH=$(readlink -f $0)
 ABSDIR=$(dirname $ABSPATH)
 source ${ABSDIR}/profile.sh
 
-REPOSITORY=/home/ubuntu/app/goonmeonity_test2
+REPOSITORY=/home/ubuntu/app/goonmeonity_test3
 PROJECT_NAME=goonmeonity_backend
 
 echo "> Build 파일 복사"
