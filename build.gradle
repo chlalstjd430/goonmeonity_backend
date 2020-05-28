@@ -14,7 +14,7 @@ buildscript {
 
 allprojects {
     group = 'com.goonmeonity'
-    version = '1.0 - '+ new Date().format("yyyyMMddHHmmss")
+    version = '1.0_'+ new Date().format("yyyyMMddHHmmss")
 }
 
 subprojects {
