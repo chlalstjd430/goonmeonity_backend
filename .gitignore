@@ -8,7 +8,11 @@
 
 goonmmeonity-application/src/main/resource/
 
+# Properties
+*.properties
+
 # User-specific stuff
+.idea
 .idea/**
 .idea/**/workspace.xml
 .idea/**/tasks.xml
@@ -120,6 +124,8 @@ hs_err_pid*
 
 ### Gradle ###
 build/
+.gradle
+.gradle/**
 
 # Ignore Gradle GUI config
 gradle-app.setting
