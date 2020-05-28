@@ -32,6 +32,6 @@ sudo chmod +x $JAR_NAME
 echo "> $JAR_NAME 실행"
 
 sudo nohup java -jar \
-    -Dspring.config.location=/home/ubuntu/app/application.properties, /home/ubuntu/app/application-real.properties,  /home/ubuntu/app/application-real-db.properties \
+    -Dspring.config.location=/home/ubuntu/app/application.properties,/home/ubuntu/app/application-real.properties,/home/ubuntu/app/application-real-db.properties \
     -Dspring.profiles.active=real \
     $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
