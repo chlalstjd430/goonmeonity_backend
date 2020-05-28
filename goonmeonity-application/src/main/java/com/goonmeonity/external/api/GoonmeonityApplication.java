@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = "com.goonmeonity")
 @EnableJpaRepositories(basePackages ="com.goonmeonity")
 public class GoonmeonityApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(GoonmeonityApplication.class, args);
     }
