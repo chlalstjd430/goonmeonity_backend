@@ -35,3 +35,4 @@ function find_idle_port()
     else
       echo "8082"
     fi
+}
