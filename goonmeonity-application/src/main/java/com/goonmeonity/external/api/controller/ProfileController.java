@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 public class ProfileController {
     private final Environment environment;
-    
+
     @GetMapping("/profile")
     public String profile() {
          List<String> profiles = Arrays.asList(environment.getActiveProfiles());
