@@ -14,6 +14,7 @@ import java.util.List;
 public class ProfileController {
     private final Environment environment;
 
+    @ApiOperation("프로필 조히")
     @GetMapping("/profile")
     public String profile() {
          List<String> profiles = Arrays.asList(environment.getActiveProfiles());
