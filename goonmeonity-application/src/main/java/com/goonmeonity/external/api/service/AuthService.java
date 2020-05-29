@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private String secretKey = "285EBCA0632782753C8803BA16DA1882960FE4D6C1043CE64B167AEF09C1CCE0";
-    private Integer expiration = 60000;
+    private Integer expiration = 600000;
     private final UserRepository userRepository;
 
     private final SignUpUser signUpUser;
@@ -92,6 +92,13 @@ public class AuthService {
                 secretKey,
                 expiration
         );
+    }
+
+    public User getUserByAccessToken(String accessToken){
+        Claims claims = JwtTokenProvider.getInstance().decodingToken(accessToken, secretKey);
+        Long userId = JwtTokenProvider.getInstance().getUserIdByClaims(claims, "AccessToken");
+
+        return findUserById.apply(userId);
     }
 
     public CheckDuplicateResponse checkDuplicateEmail(String email){
