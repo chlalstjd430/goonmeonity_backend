@@ -2,6 +2,7 @@ package com.goonmeonity.domain.service.user.function;
 
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.domain.repository.user.UserRepository;
+import com.goonmeonity.domain.service.user.error.UserDoseNotExistError;
 import lombok.AllArgsConstructor;
 
 import java.util.function.Function;
@@ -12,6 +13,6 @@ public class FindUserById implements Function<Long, User> {
 
     @Override
     public User apply(Long userId) {
-        return userRepository.findById(userId).get();
+        return userRepository.findById(userId).orElseThrow(UserDoseNotExistError::new);
     }
 }

@@ -2,9 +2,7 @@ package com.goonmeonity.domain.repository.user;
 
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.domain.service.user.error.EmailIsAlreadyExistError;
-import com.goonmeonity.domain.service.user.error.UserNotExistError;
 import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserEmail;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
