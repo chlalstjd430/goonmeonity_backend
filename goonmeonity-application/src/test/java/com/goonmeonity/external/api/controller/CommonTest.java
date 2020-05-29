@@ -40,11 +40,11 @@ public abstract class CommonTest {
     }
 
 
-    protected String signIn() throws Exception{
+    protected String signUp(int num) throws Exception{
         SignUpRequest signUpRequest = new SignUpRequest(
-                "unit@test.com",
+                "unit" + num + "@test.com",
                 "1234567890123456789012345678901234567890123456789012345678901234",
-                "unit_test"
+                "unit_test" + num
         );
         String url = "http://localhost:" + port + "/v1/auth/sign-up";
 

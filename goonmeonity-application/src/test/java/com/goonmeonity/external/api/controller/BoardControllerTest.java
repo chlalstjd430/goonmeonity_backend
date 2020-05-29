@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public class BoardControllerTest extends CommonTest{
     @Test
     public void 게시글_작성_성공() throws Exception{
-        String token = signIn();
+        String token = signUp(2);
         //given
         String url = "http://localhost:" + port + "/v1/boards/board";
         CreateBoardRequest createBoardRequest = new CreateBoardRequest(
