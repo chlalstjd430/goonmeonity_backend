@@ -1,9 +1,12 @@
 package com.goonmeonity.external.api.controller;
 
+import com.goonmeonity.domain.entity.board.BoardCategory;
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.external.api.request.CreateBoardRequest;
+import com.goonmeonity.external.api.request.SearchBoardsRequest;
 import com.goonmeonity.external.api.request.SignUpRequest;
 import com.goonmeonity.external.api.response.BoardInfoResponse;
+import com.goonmeonity.external.api.response.SearchBoardsResponse;
 import com.goonmeonity.external.api.response.SignInResponse;
 import com.goonmeonity.external.api.service.AuthService;
 import com.goonmeonity.external.api.service.BoardService;
@@ -22,7 +25,6 @@ public class BoardController {
         this.authService = authService;
     }
 
-
     @ApiOperation("게시판 작성")
     @PostMapping("/board")
     @ResponseStatus(HttpStatus.CREATED)
@@ -31,6 +33,19 @@ public class BoardController {
             @RequestBody CreateBoardRequest createBoardRequest
     ){
         User user = authService.getUserByAccessToken(accessToken);
-        return boardService.create(user , createBoardRequest);
+        return boardService.postBoard(user , createBoardRequest);
+    }
+
+    @ApiOperation("게시판 검색")
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public SearchBoardsResponse searchBoards(
+            @RequestParam  BoardCategory boardCategory,
+            @RequestParam(required = false, defaultValue = "")  String keyword,
+            @RequestParam(required = false, defaultValue = "0")  int currentPage
+    ){
+        return boardService.searchBoards(
+                new SearchBoardsRequest(boardCategory,keyword,currentPage)
+        );
     }
 }
