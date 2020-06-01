@@ -2,15 +2,9 @@ package com.goonmeonity.external.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goonmeonity.domain.entity.board.BoardCategory;
-import com.goonmeonity.external.api.request.CreateBoardRequest;
-import com.goonmeonity.external.api.request.SignInRequest;
-import com.goonmeonity.external.api.request.SignUpRequest;
-import org.junit.Before;
+import com.goonmeonity.external.api.request.board.CreateBoardRequest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.Assert.assertEquals;

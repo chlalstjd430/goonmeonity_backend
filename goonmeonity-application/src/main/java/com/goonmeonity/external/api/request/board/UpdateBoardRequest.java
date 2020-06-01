@@ -1,4 +1,4 @@
-package com.goonmeonity.external.api.request;
+package com.goonmeonity.external.api.request.board;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

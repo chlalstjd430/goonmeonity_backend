@@ -1,11 +1,7 @@
 package com.goonmeonity.external.api.controller;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.goonmeonity.domain.repository.user.UserRepository;
-import com.goonmeonity.external.api.request.SignUpRequest;
+import com.goonmeonity.external.api.request.auth.SignUpRequest;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.runner.RunWith;

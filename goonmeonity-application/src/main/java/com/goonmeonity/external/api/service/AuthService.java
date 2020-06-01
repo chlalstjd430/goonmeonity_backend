@@ -15,10 +15,10 @@ import com.goonmeonity.domain.service.user.function.SignUpUser;
 import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserEmail;
 import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserNickname;
 import com.goonmeonity.domain.service.user.validator.CheckUserExistById;
-import com.goonmeonity.external.api.request.SignInRequest;
-import com.goonmeonity.external.api.request.SignUpRequest;
+import com.goonmeonity.external.api.request.auth.SignInRequest;
+import com.goonmeonity.external.api.request.auth.SignUpRequest;
 import com.goonmeonity.external.api.response.CheckDuplicateResponse;
-import com.goonmeonity.external.api.response.SignInResponse;
+import com.goonmeonity.external.api.response.auth.SignInResponse;
 import io.jsonwebtoken.Claims;
 import org.springframework.stereotype.Service;
 

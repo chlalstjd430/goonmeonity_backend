@@ -1,4 +1,4 @@
-package com.goonmeonity.external.api.response;
+package com.goonmeonity.external.api.response.auth;
 
 import com.goonmeonity.domain.service.auth.dto.AccessToken;
 import com.goonmeonity.domain.service.user.dto.UserInfo;

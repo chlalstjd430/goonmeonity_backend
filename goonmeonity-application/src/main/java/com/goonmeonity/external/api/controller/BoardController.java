@@ -2,12 +2,12 @@ package com.goonmeonity.external.api.controller;
 
 import com.goonmeonity.domain.entity.board.BoardCategory;
 import com.goonmeonity.domain.entity.user.User;
-import com.goonmeonity.external.api.request.CreateBoardRequest;
-import com.goonmeonity.external.api.request.SearchBoardsRequest;
-import com.goonmeonity.external.api.request.UpdateBoardRequest;
-import com.goonmeonity.external.api.response.BoardInfoResponse;
-import com.goonmeonity.external.api.response.DeleteBoardResponse;
-import com.goonmeonity.external.api.response.SearchBoardsResponse;
+import com.goonmeonity.external.api.request.board.CreateBoardRequest;
+import com.goonmeonity.external.api.request.board.SearchBoardsRequest;
+import com.goonmeonity.external.api.request.board.UpdateBoardRequest;
+import com.goonmeonity.external.api.response.board.BoardInfoResponse;
+import com.goonmeonity.external.api.response.board.DeleteBoardResponse;
+import com.goonmeonity.external.api.response.board.SearchBoardsResponse;
 import com.goonmeonity.external.api.service.AuthService;
 import com.goonmeonity.external.api.service.BoardService;
 import io.swagger.annotations.ApiOperation;
