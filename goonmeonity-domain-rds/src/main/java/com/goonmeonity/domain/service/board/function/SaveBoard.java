@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import java.util.function.Function;
 
 @AllArgsConstructor
-public class CreateBoard implements Function<Board, Board> {
+public class SaveBoard implements Function<Board, Board> {
     private BoardRepository boardRepository;
 
     @Override

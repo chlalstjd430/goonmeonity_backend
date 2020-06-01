@@ -4,10 +4,9 @@ import com.goonmeonity.domain.entity.board.BoardCategory;
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.external.api.request.CreateBoardRequest;
 import com.goonmeonity.external.api.request.SearchBoardsRequest;
-import com.goonmeonity.external.api.request.SignUpRequest;
+import com.goonmeonity.external.api.request.UpdateBoardRequest;
 import com.goonmeonity.external.api.response.BoardInfoResponse;
 import com.goonmeonity.external.api.response.SearchBoardsResponse;
-import com.goonmeonity.external.api.response.SignInResponse;
 import com.goonmeonity.external.api.service.AuthService;
 import com.goonmeonity.external.api.service.BoardService;
 import io.swagger.annotations.ApiOperation;
@@ -47,5 +46,17 @@ public class BoardController {
         return boardService.searchBoards(
                 new SearchBoardsRequest(boardCategory,keyword,currentPage)
         );
+    }
+
+    @ApiOperation("게시판 수정")
+    @PutMapping("/{boardId}")
+    @ResponseStatus(HttpStatus.OK)
+    public BoardInfoResponse updateBoard(
+            @RequestHeader String accessToken,
+            @PathVariable Long boardId,
+            @RequestBody UpdateBoardRequest updateBoardRequest
+    ){
+        User user = authService.getUserByAccessToken(accessToken);
+        return boardService.updateBoard(boardId, user.getId(), updateBoardRequest);
     }
 }

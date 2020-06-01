@@ -1,15 +1,12 @@
 package com.goonmeonity.external.api.controller;
 
-import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.domain.service.auth.dto.AccessToken;
-import com.goonmeonity.domain.service.user.dto.UserInfo;
 import com.goonmeonity.external.api.request.SignInRequest;
 import com.goonmeonity.external.api.request.SignUpRequest;
 import com.goonmeonity.external.api.response.CheckDuplicateResponse;
 import com.goonmeonity.external.api.response.SignInResponse;
 import com.goonmeonity.external.api.service.AuthService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
