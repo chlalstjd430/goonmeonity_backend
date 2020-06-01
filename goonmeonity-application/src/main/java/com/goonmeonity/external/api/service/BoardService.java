@@ -6,6 +6,7 @@ import com.goonmeonity.domain.repository.board.BoardRepository;
 import com.goonmeonity.domain.service.board.dto.BoardIdAndUserId;
 import com.goonmeonity.domain.service.board.dto.BoardInfo;
 import com.goonmeonity.domain.service.board.dto.SearchBoardInfo;
+import com.goonmeonity.domain.service.board.function.DeleteBoardById;
 import com.goonmeonity.domain.service.board.function.FindBoardByIdAndAuthorId;
 import com.goonmeonity.domain.service.board.function.SaveBoard;
 import com.goonmeonity.domain.service.board.function.SearchBoardsByCategory;
@@ -13,6 +14,7 @@ import com.goonmeonity.external.api.request.CreateBoardRequest;
 import com.goonmeonity.external.api.request.SearchBoardsRequest;
 import com.goonmeonity.external.api.request.UpdateBoardRequest;
 import com.goonmeonity.external.api.response.BoardInfoResponse;
+import com.goonmeonity.external.api.response.DeleteBoardResponse;
 import com.goonmeonity.external.api.response.SearchBoardsResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class BoardService {
     private final SaveBoard saveBoard;
     private final SearchBoardsByCategory searchBoardsByCategory;
     private final FindBoardByIdAndAuthorId findBoardByIdAndAuthorId;
+    private final DeleteBoardById deleteBoardById;
 
     public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
@@ -34,6 +37,7 @@ public class BoardService {
         this.saveBoard = new SaveBoard(boardRepository);
         this.searchBoardsByCategory = new SearchBoardsByCategory(boardRepository);
         this.findBoardByIdAndAuthorId = new FindBoardByIdAndAuthorId(boardRepository);
+        this.deleteBoardById = new DeleteBoardById(boardRepository);
     }
 
     public BoardInfoResponse postBoard(User user, CreateBoardRequest createBoardRequest){
@@ -70,12 +74,18 @@ public class BoardService {
 
     public BoardInfoResponse updateBoard(Long boardId, Long userId, UpdateBoardRequest updateBoardRequest){
         Board board = findBoardByIdAndAuthorId.apply(new BoardIdAndUserId(boardId,userId));
-        // TODO : 게시판 수정 로직 수행
         board.setTitle(updateBoardRequest.getTitle());
         board.setContent(updateBoardRequest.getContent());
-
         Board updatedBoard = saveBoard.apply(board);
+
         return new BoardInfoResponse(new BoardInfo(updatedBoard));
+    }
+
+    public DeleteBoardResponse deleteBoard(long userId, long boardId){
+        Board board = findBoardByIdAndAuthorId.apply(new BoardIdAndUserId(boardId, userId));
+        deleteBoardById.accept(boardId);
+
+        return new DeleteBoardResponse("delete complete");
     }
 
 }
