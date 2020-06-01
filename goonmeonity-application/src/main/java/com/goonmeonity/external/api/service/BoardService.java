@@ -10,12 +10,12 @@ import com.goonmeonity.domain.service.board.function.DeleteBoardById;
 import com.goonmeonity.domain.service.board.function.FindBoardByIdAndAuthorId;
 import com.goonmeonity.domain.service.board.function.SaveBoard;
 import com.goonmeonity.domain.service.board.function.SearchBoardsByCategory;
-import com.goonmeonity.external.api.request.CreateBoardRequest;
-import com.goonmeonity.external.api.request.SearchBoardsRequest;
-import com.goonmeonity.external.api.request.UpdateBoardRequest;
-import com.goonmeonity.external.api.response.BoardInfoResponse;
-import com.goonmeonity.external.api.response.DeleteBoardResponse;
-import com.goonmeonity.external.api.response.SearchBoardsResponse;
+import com.goonmeonity.external.api.request.board.CreateBoardRequest;
+import com.goonmeonity.external.api.request.board.SearchBoardsRequest;
+import com.goonmeonity.external.api.request.board.UpdateBoardRequest;
+import com.goonmeonity.external.api.response.board.BoardInfoResponse;
+import com.goonmeonity.external.api.response.board.DeleteBoardResponse;
+import com.goonmeonity.external.api.response.board.SearchBoardsResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
