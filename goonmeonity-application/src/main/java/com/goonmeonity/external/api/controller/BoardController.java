@@ -6,6 +6,7 @@ import com.goonmeonity.external.api.request.CreateBoardRequest;
 import com.goonmeonity.external.api.request.SearchBoardsRequest;
 import com.goonmeonity.external.api.request.UpdateBoardRequest;
 import com.goonmeonity.external.api.response.BoardInfoResponse;
+import com.goonmeonity.external.api.response.DeleteBoardResponse;
 import com.goonmeonity.external.api.response.SearchBoardsResponse;
 import com.goonmeonity.external.api.service.AuthService;
 import com.goonmeonity.external.api.service.BoardService;
@@ -32,6 +33,7 @@ public class BoardController {
             @RequestBody CreateBoardRequest createBoardRequest
     ){
         User user = authService.getUserByAccessToken(accessToken);
+
         return boardService.postBoard(user , createBoardRequest);
     }
 
@@ -57,6 +59,19 @@ public class BoardController {
             @RequestBody UpdateBoardRequest updateBoardRequest
     ){
         User user = authService.getUserByAccessToken(accessToken);
+
         return boardService.updateBoard(boardId, user.getId(), updateBoardRequest);
+    }
+
+    @ApiOperation("게시판 삭제")
+    @DeleteMapping("/{boardId}")
+    @ResponseStatus(HttpStatus.OK)
+    public DeleteBoardResponse deleteBoard(
+            @RequestHeader String accessToken,
+            @PathVariable Long boardId
+    ){
+        User user = authService.getUserByAccessToken(accessToken);
+
+        return boardService.deleteBoard(user.getId(), boardId);
     }
 }
