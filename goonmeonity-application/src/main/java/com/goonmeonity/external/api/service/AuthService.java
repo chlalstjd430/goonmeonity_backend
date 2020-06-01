@@ -20,7 +20,6 @@ import com.goonmeonity.external.api.request.SignUpRequest;
 import com.goonmeonity.external.api.response.CheckDuplicateResponse;
 import com.goonmeonity.external.api.response.SignInResponse;
 import io.jsonwebtoken.Claims;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
