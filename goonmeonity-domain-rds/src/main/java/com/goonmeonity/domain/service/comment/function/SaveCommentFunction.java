@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import java.util.function.Function;
 
 @AllArgsConstructor
-public class SaveComment implements Function<Comment, Comment> {
+public class SaveCommentFunction implements Function<Comment, Comment> {
     private CommentRepository commentRepository;
 
     @Override
