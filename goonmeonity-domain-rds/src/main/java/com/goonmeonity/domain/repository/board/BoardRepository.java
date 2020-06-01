@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface BoardRepository extends ExtendRepository<Board> {
     @Query("SELECT b FROM Board b where b.boardCategory = :boardCategory " +
@@ -17,4 +19,6 @@ public interface BoardRepository extends ExtendRepository<Board> {
     );
 
     Page<Board> findAll(Pageable pageable);
+
+    Optional<Board> findBoardByIdAndAuthorId(Long id, Long authorId);
 }
