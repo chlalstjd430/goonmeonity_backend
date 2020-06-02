@@ -5,13 +5,15 @@ import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.domain.repository.board.BoardRepository;
 import com.goonmeonity.domain.repository.comment.CommentRepository;
 import com.goonmeonity.domain.service.board.validator.CheckExistBoard;
+import com.goonmeonity.domain.service.comment.dto.CommentIdAndUserIdAndBoardId;
 import com.goonmeonity.domain.service.comment.dto.CommentInfo;
 import com.goonmeonity.domain.service.comment.dto.FindCommentsCondition;
+import com.goonmeonity.domain.service.comment.function.FindCommentByIdAndUserIdAndBoardIdFunction;
 import com.goonmeonity.domain.service.comment.function.FindCommentsFunction;
 import com.goonmeonity.domain.service.comment.function.SaveCommentFunction;
 import com.goonmeonity.external.api.response.comment.CreateCommentResponse;
 import com.goonmeonity.external.api.response.comment.GetCommentsResponse;
-import org.hibernate.validator.constraints.NotBlank;
+import com.goonmeonity.external.api.response.comment.UpdateCommentResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ public class CommentService {
 
     private final SaveCommentFunction saveCommentFunction;
     private final FindCommentsFunction findCommentsFunction;
+    private final FindCommentByIdAndUserIdAndBoardIdFunction findCommentByIdAndUserIdAndBoardIdFunction;
 
     private final CheckExistBoard checkExistBoard;
 
@@ -34,6 +37,7 @@ public class CommentService {
 
         this.saveCommentFunction = new SaveCommentFunction(commentRepository);
         this.findCommentsFunction = new FindCommentsFunction(commentRepository);
+        this.findCommentByIdAndUserIdAndBoardIdFunction = new FindCommentByIdAndUserIdAndBoardIdFunction(commentRepository);
 
         this.checkExistBoard = new CheckExistBoard(boardRepository);
     }
@@ -69,5 +73,17 @@ public class CommentService {
         comments.forEach(comment -> commentsInfo.add(new CommentInfo(comment)));
 
         return commentsInfo;
+    }
+
+    public UpdateCommentResponse updateComment(long boardId, long commentId, long userId, String content){
+        Comment beforeComment = findCommentByIdAndUserIdAndBoardIdFunction.apply(new CommentIdAndUserIdAndBoardId(commentId, userId, boardId));
+        beforeComment.setContent(content);
+        Comment updatedComment = saveCommentFunction.apply(beforeComment);
+
+        boolean result = false;
+        if(updatedComment.getContent().equals(content))
+            result = true;
+
+        return new UpdateCommentResponse(result);
     }
 }

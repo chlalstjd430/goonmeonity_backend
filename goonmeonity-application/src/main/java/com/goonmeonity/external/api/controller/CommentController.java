@@ -3,6 +3,7 @@ package com.goonmeonity.external.api.controller;
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.external.api.response.comment.CreateCommentResponse;
 import com.goonmeonity.external.api.response.comment.GetCommentsResponse;
+import com.goonmeonity.external.api.response.comment.UpdateCommentResponse;
 import com.goonmeonity.external.api.service.AuthService;
 import com.goonmeonity.external.api.service.CommentService;
 import io.swagger.annotations.ApiOperation;
@@ -41,5 +42,19 @@ public class CommentController {
             @RequestParam(required = false, defaultValue = "0")  int currentPage
     ){
         return commentService.getComments(boardId, currentPage);
+    }
+
+    @ApiOperation("댓글 수정")
+    @PatchMapping("/{commentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public UpdateCommentResponse updateComment(
+            @RequestHeader String accessToken,
+            @PathVariable long boardId,
+            @PathVariable long commentId,
+            @RequestBody String content
+    ){
+        User user = authService.getUserByAccessToken(accessToken);
+
+        return commentService.updateComment(boardId, commentId, user.getId(), content);
     }
 }
