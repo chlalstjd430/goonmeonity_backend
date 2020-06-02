@@ -18,7 +18,6 @@ public class FindCommentByIdAndUserIdAndBoardIdFunction implements Function<Comm
                 commentIdAndUserIdAndBoardId.getCommentId(),
                 commentIdAndUserIdAndBoardId.getUserId(),
                 commentIdAndUserIdAndBoardId.getBoardId()
-        )
-                .orElseThrow(UserDoesNotHaveCommentPermissionError::new);
+        ).orElseThrow(UserDoesNotHaveCommentPermissionError::new);
     }
 }

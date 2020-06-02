@@ -2,6 +2,7 @@ package com.goonmeonity.external.api.controller;
 
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.external.api.response.comment.CreateCommentResponse;
+import com.goonmeonity.external.api.response.comment.DeleteCommentResponse;
 import com.goonmeonity.external.api.response.comment.GetCommentsResponse;
 import com.goonmeonity.external.api.response.comment.UpdateCommentResponse;
 import com.goonmeonity.external.api.service.AuthService;
@@ -53,5 +54,18 @@ public class CommentController {
         User user = authService.getUserByAccessToken(accessToken);
 
         return commentService.updateComment(boardId, commentId, user.getId(), content);
+    }
+
+    @ApiOperation("댓글 삭제")
+    @DeleteMapping("/{commentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public DeleteCommentResponse deleteComment(
+            @RequestHeader String accessToken,
+            @PathVariable long boardId,
+            @PathVariable long commentId
+    ){
+        User user = authService.getUserByAccessToken(accessToken);
+
+        return commentService.deleteComment(boardId, commentId, user.getId());
     }
 }
