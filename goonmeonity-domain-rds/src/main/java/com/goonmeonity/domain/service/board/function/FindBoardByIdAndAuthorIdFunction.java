@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import java.util.function.Function;
 
 @AllArgsConstructor
-public class FindBoardByIdAndAuthorId implements Function<BoardIdAndUserId, Board> {
+public class FindBoardByIdAndAuthorIdFunction implements Function<BoardIdAndUserId, Board> {
     private BoardRepository boardRepository;
 
     @Override

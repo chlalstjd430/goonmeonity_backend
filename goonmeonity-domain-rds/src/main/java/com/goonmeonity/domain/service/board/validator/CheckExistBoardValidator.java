@@ -4,10 +4,10 @@ import com.goonmeonity.core.validator.ValidatorWithError;
 import com.goonmeonity.domain.repository.board.BoardRepository;
 import com.goonmeonity.domain.service.board.error.BoardDoesNotExistError;
 
-public class CheckExistBoard extends ValidatorWithError<Long> {
+public class CheckExistBoardValidator extends ValidatorWithError<Long> {
     private BoardRepository boardRepository;
 
-    public CheckExistBoard(BoardRepository boardRepository) {
+    public CheckExistBoardValidator(BoardRepository boardRepository) {
         super(new BoardDoesNotExistError());
         this.boardRepository = boardRepository;
     }
