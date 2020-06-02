@@ -4,7 +4,7 @@ import com.goonmeonity.domain.entity.comment.Comment;
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.domain.repository.board.BoardRepository;
 import com.goonmeonity.domain.repository.comment.CommentRepository;
-import com.goonmeonity.domain.service.board.validator.CheckExistBoard;
+import com.goonmeonity.domain.service.board.validator.CheckExistBoardValidator;
 import com.goonmeonity.domain.service.comment.dto.CommentIdAndUserIdAndBoardId;
 import com.goonmeonity.domain.service.comment.dto.CommentInfo;
 import com.goonmeonity.domain.service.comment.dto.FindCommentsCondition;
@@ -29,7 +29,7 @@ public class CommentService {
     private final FindCommentsFunction findCommentsFunction;
     private final FindCommentByIdAndUserIdAndBoardIdFunction findCommentByIdAndUserIdAndBoardIdFunction;
 
-    private final CheckExistBoard checkExistBoard;
+    private final CheckExistBoardValidator checkExistBoardValidator;
 
     public CommentService(CommentRepository commentRepository, BoardRepository boardRepository) {
         this.commentRepository = commentRepository;
@@ -39,11 +39,11 @@ public class CommentService {
         this.findCommentsFunction = new FindCommentsFunction(commentRepository);
         this.findCommentByIdAndUserIdAndBoardIdFunction = new FindCommentByIdAndUserIdAndBoardIdFunction(commentRepository);
 
-        this.checkExistBoard = new CheckExistBoard(boardRepository);
+        this.checkExistBoardValidator = new CheckExistBoardValidator(boardRepository);
     }
 
     public CreateCommentResponse createComment(User user, long boardId, String content){
-        checkExistBoard.verify(boardId);
+        checkExistBoardValidator.verify(boardId);
 
         Comment comment = Comment.builder()
                 .author(user)
@@ -57,7 +57,7 @@ public class CommentService {
     }
 
     public GetCommentsResponse getComments(long boardId, int currentPage){
-        checkExistBoard.verify(boardId);
+        checkExistBoardValidator.verify(boardId);
         Page<Comment> comments = findCommentsFunction.apply(new FindCommentsCondition(boardId, currentPage));
 
         return GetCommentsResponse.builder()

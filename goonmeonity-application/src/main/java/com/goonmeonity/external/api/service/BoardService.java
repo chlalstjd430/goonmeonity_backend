@@ -6,10 +6,10 @@ import com.goonmeonity.domain.repository.board.BoardRepository;
 import com.goonmeonity.domain.service.board.dto.BoardIdAndUserId;
 import com.goonmeonity.domain.service.board.dto.BoardInfo;
 import com.goonmeonity.domain.service.board.dto.SearchBoardInfo;
-import com.goonmeonity.domain.service.board.function.DeleteBoardById;
-import com.goonmeonity.domain.service.board.function.FindBoardByIdAndAuthorId;
-import com.goonmeonity.domain.service.board.function.SaveBoard;
-import com.goonmeonity.domain.service.board.function.SearchBoardsByCategory;
+import com.goonmeonity.domain.service.board.function.DeleteBoardByIdFunction;
+import com.goonmeonity.domain.service.board.function.FindBoardByIdAndAuthorIdFunction;
+import com.goonmeonity.domain.service.board.function.SaveBoardFunction;
+import com.goonmeonity.domain.service.board.function.SearchBoardsByCategoryFunction;
 import com.goonmeonity.external.api.request.board.CreateBoardRequest;
 import com.goonmeonity.external.api.request.board.SearchBoardsRequest;
 import com.goonmeonity.external.api.request.board.UpdateBoardRequest;
@@ -26,18 +26,18 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepository;
 
-    private final SaveBoard saveBoard;
-    private final SearchBoardsByCategory searchBoardsByCategory;
-    private final FindBoardByIdAndAuthorId findBoardByIdAndAuthorId;
-    private final DeleteBoardById deleteBoardById;
+    private final SaveBoardFunction saveBoardFunction;
+    private final SearchBoardsByCategoryFunction searchBoardsByCategoryFunction;
+    private final FindBoardByIdAndAuthorIdFunction findBoardByIdAndAuthorIdFunction;
+    private final DeleteBoardByIdFunction deleteBoardByIdFunction;
 
     public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
 
-        this.saveBoard = new SaveBoard(boardRepository);
-        this.searchBoardsByCategory = new SearchBoardsByCategory(boardRepository);
-        this.findBoardByIdAndAuthorId = new FindBoardByIdAndAuthorId(boardRepository);
-        this.deleteBoardById = new DeleteBoardById(boardRepository);
+        this.saveBoardFunction = new SaveBoardFunction(boardRepository);
+        this.searchBoardsByCategoryFunction = new SearchBoardsByCategoryFunction(boardRepository);
+        this.findBoardByIdAndAuthorIdFunction = new FindBoardByIdAndAuthorIdFunction(boardRepository);
+        this.deleteBoardByIdFunction = new DeleteBoardByIdFunction(boardRepository);
     }
 
     public BoardInfoResponse postBoard(User user, CreateBoardRequest createBoardRequest){
@@ -48,13 +48,13 @@ public class BoardService {
                 .author(user)
                 .build();
 
-        Board resultBoard = saveBoard.apply(newBoard);
+        Board resultBoard = saveBoardFunction.apply(newBoard);
 
         return new BoardInfoResponse(new BoardInfo(resultBoard));
     }
 
     public SearchBoardsResponse searchBoards(SearchBoardsRequest searchBoardsRequest){
-        Page<Board> boards = searchBoardsByCategory.apply(
+        Page<Board> boards = searchBoardsByCategoryFunction.apply(
                 new SearchBoardInfo(
                         searchBoardsRequest.getBoardCategory(),
                         searchBoardsRequest.getKeyword(),
@@ -73,17 +73,17 @@ public class BoardService {
     }
 
     public BoardInfoResponse updateBoard(Long boardId, Long userId, UpdateBoardRequest updateBoardRequest){
-        Board board = findBoardByIdAndAuthorId.apply(new BoardIdAndUserId(boardId,userId));
+        Board board = findBoardByIdAndAuthorIdFunction.apply(new BoardIdAndUserId(boardId,userId));
         board.setTitle(updateBoardRequest.getTitle());
         board.setContent(updateBoardRequest.getContent());
-        Board updatedBoard = saveBoard.apply(board);
+        Board updatedBoard = saveBoardFunction.apply(board);
 
         return new BoardInfoResponse(new BoardInfo(updatedBoard));
     }
 
     public DeleteBoardResponse deleteBoard(long userId, long boardId){
-        Board board = findBoardByIdAndAuthorId.apply(new BoardIdAndUserId(boardId, userId));
-        deleteBoardById.accept(boardId);
+        Board board = findBoardByIdAndAuthorIdFunction.apply(new BoardIdAndUserId(boardId, userId));
+        deleteBoardByIdFunction.accept(boardId);
 
         return new DeleteBoardResponse("delete complete");
     }

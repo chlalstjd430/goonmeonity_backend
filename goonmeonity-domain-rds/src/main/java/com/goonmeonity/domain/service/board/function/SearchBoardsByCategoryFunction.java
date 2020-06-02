@@ -11,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import java.util.function.Function;
 
 @AllArgsConstructor
-public class SearchBoardsByCategory implements Function<SearchBoardInfo, Page<Board>> {
+public class SearchBoardsByCategoryFunction implements Function<SearchBoardInfo, Page<Board>> {
     private BoardRepository boardRepository;
 
     @Override

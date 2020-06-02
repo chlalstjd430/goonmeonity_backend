@@ -5,7 +5,7 @@ import com.goonmeonity.domain.repository.user.UserRepository;
 import com.goonmeonity.domain.service.auth.JwtTokenProvider;
 import com.goonmeonity.domain.service.auth.dto.AccessToken;
 import com.goonmeonity.domain.service.auth.dto.InputPasswordAndRealPassword;
-import com.goonmeonity.domain.service.auth.validator.CheckPassword;
+import com.goonmeonity.domain.service.auth.validator.CheckPasswordValidator;
 import com.goonmeonity.domain.service.user.dto.UserInfo;
 import com.goonmeonity.domain.service.user.error.EmailIsAlreadyExistError;
 import com.goonmeonity.domain.service.user.error.NicknameIsAlreadyExistError;
@@ -36,7 +36,7 @@ public class AuthService {
     private final CheckDuplicateUserEmail checkDuplicateUserEmail;
     private final CheckDuplicateUserNickname checkDuplicateUserNickname;
     private final CheckUserExistById checkUserExistById;
-    private final CheckPassword checkPassword;
+    private final CheckPasswordValidator checkPasswordValidator;
 
     public AuthService(UserRepository userRepository){
         this.userRepository = userRepository;
@@ -45,13 +45,13 @@ public class AuthService {
         this.checkDuplicateUserNickname = new CheckDuplicateUserNickname(userRepository);
         this.checkDuplicateUserEmail = new CheckDuplicateUserEmail(userRepository);
         this.checkUserExistById = new CheckUserExistById(userRepository);
-        this.checkPassword = new CheckPassword();
+        this.checkPasswordValidator = new CheckPasswordValidator();
         this.findUserByEmail = new FindUserByEmail(userRepository);
     }
 
     public SignInResponse signIn(SignInRequest signInRequest){
         User user = findUserByEmail.apply(signInRequest.getEmail());
-        checkPassword.verify(
+        checkPasswordValidator.verify(
                 new InputPasswordAndRealPassword(user.getHashedPassword(), signInRequest.getHashedPassword())
         );
 

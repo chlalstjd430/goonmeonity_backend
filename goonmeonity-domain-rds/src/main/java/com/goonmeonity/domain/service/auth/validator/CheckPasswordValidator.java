@@ -5,8 +5,8 @@ import com.goonmeonity.domain.repository.user.UserRepository;
 import com.goonmeonity.domain.service.auth.dto.InputPasswordAndRealPassword;
 import com.goonmeonity.domain.service.auth.error.PasswordDoNotMatchError;
 
-public class CheckPassword extends ValidatorWithError<InputPasswordAndRealPassword> {
-  public CheckPassword() {
+public class CheckPasswordValidator extends ValidatorWithError<InputPasswordAndRealPassword> {
+  public CheckPasswordValidator() {
         super(new PasswordDoNotMatchError());
     }
 

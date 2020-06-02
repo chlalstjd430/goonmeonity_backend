@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
-public class DeleteBoardById implements Consumer<Long> {
+public class DeleteBoardByIdFunction implements Consumer<Long> {
     private BoardRepository boardRepository;
 
     @Override
