@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/chlalstjd430/goonmeonity_backend.svg?branch=develop)](https://travis-ci.org/chlalstjd430/goonmeonity_backend)
+
 # 군인들을 위한 커뮤니티 "군머니티"
 
 ### 백엔드 기술 스택
