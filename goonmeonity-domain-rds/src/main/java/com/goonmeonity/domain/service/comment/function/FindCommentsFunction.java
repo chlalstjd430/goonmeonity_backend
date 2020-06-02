@@ -2,9 +2,7 @@ package com.goonmeonity.domain.service.comment.function;
 
 import com.goonmeonity.domain.entity.comment.Comment;
 import com.goonmeonity.domain.repository.comment.CommentRepository;
-import com.goonmeonity.domain.service.comment.dto.FindCommentsCondition;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.function.Function;

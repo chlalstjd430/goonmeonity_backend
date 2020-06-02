@@ -7,14 +7,12 @@ import com.goonmeonity.domain.repository.comment.CommentRepository;
 import com.goonmeonity.domain.service.board.validator.CheckExistBoardValidator;
 import com.goonmeonity.domain.service.comment.dto.CommentIdAndUserIdAndBoardId;
 import com.goonmeonity.domain.service.comment.dto.CommentInfo;
-import com.goonmeonity.domain.service.comment.dto.FindCommentsCondition;
 import com.goonmeonity.domain.service.comment.function.FindCommentByIdAndUserIdAndBoardIdFunction;
 import com.goonmeonity.domain.service.comment.function.FindCommentsFunction;
 import com.goonmeonity.domain.service.comment.function.SaveCommentFunction;
 import com.goonmeonity.external.api.response.comment.CreateCommentResponse;
 import com.goonmeonity.external.api.response.comment.GetCommentsResponse;
 import com.goonmeonity.external.api.response.comment.UpdateCommentResponse;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

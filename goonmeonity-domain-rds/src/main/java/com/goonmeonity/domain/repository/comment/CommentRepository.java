@@ -2,7 +2,6 @@ package com.goonmeonity.domain.repository.comment;
 
 import com.goonmeonity.domain.entity.comment.Comment;
 import com.goonmeonity.domain.repository.ExtendRepository;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
