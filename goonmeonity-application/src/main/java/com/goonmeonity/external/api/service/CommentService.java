@@ -7,10 +7,13 @@ import com.goonmeonity.domain.repository.comment.CommentRepository;
 import com.goonmeonity.domain.service.board.validator.CheckExistBoardValidator;
 import com.goonmeonity.domain.service.comment.dto.CommentIdAndUserIdAndBoardId;
 import com.goonmeonity.domain.service.comment.dto.CommentInfo;
+import com.goonmeonity.domain.service.comment.error.UserDoesNotHaveCommentPermissionError;
+import com.goonmeonity.domain.service.comment.function.DeleteCommentFunction;
 import com.goonmeonity.domain.service.comment.function.FindCommentByIdAndUserIdAndBoardIdFunction;
 import com.goonmeonity.domain.service.comment.function.FindCommentsFunction;
 import com.goonmeonity.domain.service.comment.function.SaveCommentFunction;
 import com.goonmeonity.external.api.response.comment.CreateCommentResponse;
+import com.goonmeonity.external.api.response.comment.DeleteCommentResponse;
 import com.goonmeonity.external.api.response.comment.GetCommentsResponse;
 import com.goonmeonity.external.api.response.comment.UpdateCommentResponse;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,7 @@ public class CommentService {
     private final SaveCommentFunction saveCommentFunction;
     private final FindCommentsFunction findCommentsFunction;
     private final FindCommentByIdAndUserIdAndBoardIdFunction findCommentByIdAndUserIdAndBoardIdFunction;
+    private final DeleteCommentFunction deleteCommentFunction;
 
     private final CheckExistBoardValidator checkExistBoardValidator;
 
@@ -36,6 +40,7 @@ public class CommentService {
         this.saveCommentFunction = new SaveCommentFunction(commentRepository);
         this.findCommentsFunction = new FindCommentsFunction(commentRepository);
         this.findCommentByIdAndUserIdAndBoardIdFunction = new FindCommentByIdAndUserIdAndBoardIdFunction(commentRepository);
+        this.deleteCommentFunction = new DeleteCommentFunction(commentRepository);
 
         this.checkExistBoardValidator = new CheckExistBoardValidator(boardRepository);
     }
@@ -81,5 +86,20 @@ public class CommentService {
             result = true;
 
         return new UpdateCommentResponse(result);
+    }
+
+    public DeleteCommentResponse deleteComment(long boardId, long commentId, long userId){
+        Comment comment = findCommentByIdAndUserIdAndBoardIdFunction.apply(new CommentIdAndUserIdAndBoardId(commentId, userId, boardId));
+
+        deleteCommentFunction.accept(commentId);
+
+        boolean result = false;
+        try {
+            comment = findCommentByIdAndUserIdAndBoardIdFunction.apply(new CommentIdAndUserIdAndBoardId(commentId, userId, boardId));
+        }catch (UserDoesNotHaveCommentPermissionError error){
+            result = true;
+        }
+
+        return new DeleteCommentResponse(result);
     }
 }
