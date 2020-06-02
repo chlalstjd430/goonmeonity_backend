@@ -12,15 +12,11 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GetCommentsResponse {
     private List<CommentInfo> commentsInfo;
-    private int totalPage;
-    private int currentPage;
     private long commentsCount;
 
     @Builder
-    public GetCommentsResponse(List<CommentInfo> commentsInfo, int totalPage, int currentPage, long commentsCount) {
+    public GetCommentsResponse(List<CommentInfo> commentsInfo, long commentsCount) {
         this.commentsInfo = commentsInfo;
-        this.totalPage = totalPage;
-        this.currentPage = currentPage;
         this.commentsCount = commentsCount;
     }
 }

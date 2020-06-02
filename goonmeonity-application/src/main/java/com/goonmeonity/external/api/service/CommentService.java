@@ -56,15 +56,13 @@ public class CommentService {
         return new CreateCommentResponse(new CommentInfo(comment));
     }
 
-    public GetCommentsResponse getComments(long boardId, int currentPage){
+    public GetCommentsResponse getComments(long boardId){
         checkExistBoardValidator.verify(boardId);
-        Page<Comment> comments = findCommentsFunction.apply(new FindCommentsCondition(boardId, currentPage));
+        List<Comment> comments = findCommentsFunction.apply(boardId);
 
         return GetCommentsResponse.builder()
-                .commentsInfo(commentsToCommentsInfo(comments.getContent()))
-                .currentPage(comments.getNumber())
-                .totalPage(comments.getTotalPages())
-                .commentsCount(comments.getTotalElements())
+                .commentsInfo(commentsToCommentsInfo(comments))
+                .commentsCount(comments.size())
                 .build();
     }
 
