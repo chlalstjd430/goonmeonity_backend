@@ -37,11 +37,8 @@ public class CommentController {
     @ApiOperation("댓글 정보 얻기")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public GetCommentsResponse getComments(
-            @PathVariable long boardId,
-            @RequestParam(required = false, defaultValue = "0")  int currentPage
-    ){
-        return commentService.getComments(boardId, currentPage);
+    public GetCommentsResponse getComments(@PathVariable long boardId){
+        return commentService.getComments(boardId);
     }
 
     @ApiOperation("댓글 수정")

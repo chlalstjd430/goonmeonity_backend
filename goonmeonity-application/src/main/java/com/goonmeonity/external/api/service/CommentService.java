@@ -7,14 +7,12 @@ import com.goonmeonity.domain.repository.comment.CommentRepository;
 import com.goonmeonity.domain.service.board.validator.CheckExistBoardValidator;
 import com.goonmeonity.domain.service.comment.dto.CommentIdAndUserIdAndBoardId;
 import com.goonmeonity.domain.service.comment.dto.CommentInfo;
-import com.goonmeonity.domain.service.comment.dto.FindCommentsCondition;
 import com.goonmeonity.domain.service.comment.function.FindCommentByIdAndUserIdAndBoardIdFunction;
 import com.goonmeonity.domain.service.comment.function.FindCommentsFunction;
 import com.goonmeonity.domain.service.comment.function.SaveCommentFunction;
 import com.goonmeonity.external.api.response.comment.CreateCommentResponse;
 import com.goonmeonity.external.api.response.comment.GetCommentsResponse;
 import com.goonmeonity.external.api.response.comment.UpdateCommentResponse;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -56,15 +54,13 @@ public class CommentService {
         return new CreateCommentResponse(new CommentInfo(comment));
     }
 
-    public GetCommentsResponse getComments(long boardId, int currentPage){
+    public GetCommentsResponse getComments(long boardId){
         checkExistBoardValidator.verify(boardId);
-        Page<Comment> comments = findCommentsFunction.apply(new FindCommentsCondition(boardId, currentPage));
+        List<Comment> comments = findCommentsFunction.apply(boardId);
 
         return GetCommentsResponse.builder()
-                .commentsInfo(commentsToCommentsInfo(comments.getContent()))
-                .currentPage(comments.getNumber())
-                .totalPage(comments.getTotalPages())
-                .commentsCount(comments.getTotalElements())
+                .commentsInfo(commentsToCommentsInfo(comments))
+                .commentsCount(comments.size())
                 .build();
     }
 

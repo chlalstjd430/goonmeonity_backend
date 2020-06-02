@@ -2,21 +2,17 @@ package com.goonmeonity.domain.service.comment.function;
 
 import com.goonmeonity.domain.entity.comment.Comment;
 import com.goonmeonity.domain.repository.comment.CommentRepository;
-import com.goonmeonity.domain.service.comment.dto.FindCommentsCondition;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
 import java.util.function.Function;
 
 @AllArgsConstructor
-public class FindCommentsFunction implements Function<FindCommentsCondition, Page<Comment>> {
+public class FindCommentsFunction implements Function<Long, List<Comment>> {
     private CommentRepository commentRepository;
 
     @Override
-    public Page<Comment> apply(FindCommentsCondition findCommentsCondition) {
-        return commentRepository.findAllByBoardIdOrderByCreatedDateDesc(
-                findCommentsCondition.getBoardId(), PageRequest.of(findCommentsCondition.getCurrentPage(), 10)
-        );
+    public List<Comment> apply(Long boardId) {
+        return commentRepository.findAllByBoardIdOrderByCreatedDate(boardId);
     }
 }
