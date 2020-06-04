@@ -1,9 +1,6 @@
 package com.goonmeonity.external.api.filter;
 
-import com.goonmeonity.core.error.ConflictError;
-import com.goonmeonity.core.error.ForbiddenError;
-import com.goonmeonity.core.error.NotFoundError;
-import com.goonmeonity.core.error.UnauthorizedError;
+import com.goonmeonity.core.error.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,5 +32,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = ForbiddenError.class)
     public String forbiddenException(ForbiddenError forbiddenError){
         return forbiddenError.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = BadRequestError.class)
+    public String badRequestException(BadRequestError badRequestError){
+        return badRequestError.getMessage();
     }
 }

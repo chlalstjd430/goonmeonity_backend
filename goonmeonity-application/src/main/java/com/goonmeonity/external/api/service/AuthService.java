@@ -9,12 +9,12 @@ import com.goonmeonity.domain.service.auth.validator.CheckPasswordValidator;
 import com.goonmeonity.domain.service.user.dto.UserInfo;
 import com.goonmeonity.domain.service.user.error.EmailIsAlreadyExistError;
 import com.goonmeonity.domain.service.user.error.NicknameIsAlreadyExistError;
-import com.goonmeonity.domain.service.user.function.FindUserByEmail;
-import com.goonmeonity.domain.service.user.function.FindUserById;
-import com.goonmeonity.domain.service.user.function.SignUpUser;
-import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserEmail;
-import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserNickname;
-import com.goonmeonity.domain.service.user.validator.CheckUserExistById;
+import com.goonmeonity.domain.service.user.function.FindUserByEmailFunction;
+import com.goonmeonity.domain.service.user.function.FindUserByIdFunction;
+import com.goonmeonity.domain.service.user.function.SignUpUserFunction;
+import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserEmailValidator;
+import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserNicknameValidator;
+import com.goonmeonity.domain.service.user.validator.CheckUserExistByIdValidator;
 import com.goonmeonity.external.api.request.auth.SignInRequest;
 import com.goonmeonity.external.api.request.auth.SignUpRequest;
 import com.goonmeonity.external.api.response.CheckDuplicateResponse;
@@ -29,28 +29,28 @@ public class AuthService {
     private Integer expiration = 600000;
     private final UserRepository userRepository;
 
-    private final SignUpUser signUpUser;
-    private final FindUserById findUserById;
-    private final FindUserByEmail findUserByEmail;
+    private final SignUpUserFunction signUpUserFunction;
+    private final FindUserByIdFunction findUserByIdFunction;
+    private final FindUserByEmailFunction findUserByEmailFunction;
 
-    private final CheckDuplicateUserEmail checkDuplicateUserEmail;
-    private final CheckDuplicateUserNickname checkDuplicateUserNickname;
-    private final CheckUserExistById checkUserExistById;
+    private final CheckDuplicateUserEmailValidator checkDuplicateUserEmailValidator;
+    private final CheckDuplicateUserNicknameValidator checkDuplicateUserNicknameValidator;
+    private final CheckUserExistByIdValidator checkUserExistByIdValidator;
     private final CheckPasswordValidator checkPasswordValidator;
 
     public AuthService(UserRepository userRepository){
         this.userRepository = userRepository;
-        this.signUpUser = new SignUpUser(userRepository);
-        this.findUserById = new FindUserById(userRepository);
-        this.checkDuplicateUserNickname = new CheckDuplicateUserNickname(userRepository);
-        this.checkDuplicateUserEmail = new CheckDuplicateUserEmail(userRepository);
-        this.checkUserExistById = new CheckUserExistById(userRepository);
+        this.signUpUserFunction = new SignUpUserFunction(userRepository);
+        this.findUserByIdFunction = new FindUserByIdFunction(userRepository);
+        this.checkDuplicateUserNicknameValidator = new CheckDuplicateUserNicknameValidator(userRepository);
+        this.checkDuplicateUserEmailValidator = new CheckDuplicateUserEmailValidator(userRepository);
+        this.checkUserExistByIdValidator = new CheckUserExistByIdValidator(userRepository);
         this.checkPasswordValidator = new CheckPasswordValidator();
-        this.findUserByEmail = new FindUserByEmail(userRepository);
+        this.findUserByEmailFunction = new FindUserByEmailFunction(userRepository);
     }
 
     public SignInResponse signIn(SignInRequest signInRequest){
-        User user = findUserByEmail.apply(signInRequest.getEmail());
+        User user = findUserByEmailFunction.apply(signInRequest.getEmail());
         checkPasswordValidator.verify(
                 new InputPasswordAndRealPassword(user.getHashedPassword(), signInRequest.getHashedPassword())
         );
@@ -63,9 +63,9 @@ public class AuthService {
     }
 
     public SignInResponse signUpByEmail(SignUpRequest signUpRequest){
-        checkDuplicateUserEmail.verify(signUpRequest.getEmail());
-        checkDuplicateUserNickname.verify(signUpRequest.getNickname());
-        User user = signUpUser.apply(
+        checkDuplicateUserEmailValidator.verify(signUpRequest.getEmail());
+        checkDuplicateUserNicknameValidator.verify(signUpRequest.getNickname());
+        User user = signUpUserFunction.apply(
                 new User(
                         null,
                         signUpRequest.getEmail(),
@@ -84,10 +84,10 @@ public class AuthService {
     public AccessToken refreshAccessToken(String refreshToken){
         Claims claims = JwtTokenProvider.getInstance().decodingToken(refreshToken, secretKey);
         long userId = JwtTokenProvider.getInstance().getUserIdByClaims(claims, "RefreshToken");
-        checkUserExistById.verify(userId);
+        checkUserExistByIdValidator.verify(userId);
 
         return JwtTokenProvider.getInstance().generateAccessKey(
-                findUserById.apply(userId),
+                findUserByIdFunction.apply(userId),
                 secretKey,
                 expiration
         );
@@ -97,12 +97,12 @@ public class AuthService {
         Claims claims = JwtTokenProvider.getInstance().decodingToken(accessToken, secretKey);
         Long userId = JwtTokenProvider.getInstance().getUserIdByClaims(claims, "AccessToken");
 
-        return findUserById.apply(userId);
+        return findUserByIdFunction.apply(userId);
     }
 
     public CheckDuplicateResponse checkDuplicateEmail(String email){
         try {
-            checkDuplicateUserEmail.verify(email);
+            checkDuplicateUserEmailValidator.verify(email);
         }catch (EmailIsAlreadyExistError error){
             return new CheckDuplicateResponse(false, "중복된 이메일 입니다.");
         }
@@ -112,7 +112,7 @@ public class AuthService {
 
     public CheckDuplicateResponse checkDuplicateNickname(String nickname){
         try {
-            checkDuplicateUserNickname.verify(nickname);
+            checkDuplicateUserNicknameValidator.verify(nickname);
         }catch (NicknameIsAlreadyExistError error){
             return new CheckDuplicateResponse(false, "중복된 닉네임 입니다.");
         }

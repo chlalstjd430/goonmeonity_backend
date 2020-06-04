@@ -8,11 +8,11 @@ import lombok.AllArgsConstructor;
 import java.util.function.Function;
 
 @AllArgsConstructor
-public class FindUserById implements Function<Long, User> {
+public class FindUserByEmailFunction implements Function<String, User> {
     private UserRepository userRepository;
 
     @Override
-    public User apply(Long userId) {
-        return userRepository.findById(userId).orElseThrow(UserDoseNotExistError::new);
+    public User apply(String email) {
+        return userRepository.findByEmail(email).orElseThrow(UserDoseNotExistError::new);
     }
 }

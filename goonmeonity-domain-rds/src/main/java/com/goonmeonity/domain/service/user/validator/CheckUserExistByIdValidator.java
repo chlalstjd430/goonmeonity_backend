@@ -4,10 +4,10 @@ import com.goonmeonity.core.validator.ValidatorWithError;
 import com.goonmeonity.domain.repository.user.UserRepository;
 import com.goonmeonity.domain.service.user.error.UserDoseNotExistError;
 
-public class CheckUserExistById extends ValidatorWithError<Long> {
+public class CheckUserExistByIdValidator extends ValidatorWithError<Long> {
     private UserRepository userRepository;
 
-    public CheckUserExistById(UserRepository userRepository) {
+    public CheckUserExistByIdValidator(UserRepository userRepository) {
         super(new UserDoseNotExistError());
         this.userRepository = userRepository;
     }

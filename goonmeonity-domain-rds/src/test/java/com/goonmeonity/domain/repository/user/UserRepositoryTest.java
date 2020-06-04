@@ -2,7 +2,7 @@ package com.goonmeonity.domain.repository.user;
 
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.domain.service.user.error.EmailIsAlreadyExistError;
-import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserEmail;
+import com.goonmeonity.domain.service.user.validator.CheckDuplicateUserEmailValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +31,17 @@ public class UserRepositoryTest {
         //given
         User user = signUp();
         //when
-        CheckDuplicateUserEmail checkDuplicateUserEmail = new CheckDuplicateUserEmail(userRepository);
+        CheckDuplicateUserEmailValidator checkDuplicateUserEmailValidator = new CheckDuplicateUserEmailValidator(userRepository);
         //then
-        checkDuplicateUserEmail.verify(user.getEmail());
+        checkDuplicateUserEmailValidator.verify(user.getEmail());
     }
 
     @Test
     public void 에메일_중복검사_중복아님(){
         //given, when
-        CheckDuplicateUserEmail checkDuplicateUserEmail = new CheckDuplicateUserEmail(userRepository);
+        CheckDuplicateUserEmailValidator checkDuplicateUserEmailValidator = new CheckDuplicateUserEmailValidator(userRepository);
         //then
-        checkDuplicateUserEmail.verify("duplicate_test@gmail.com");
+        checkDuplicateUserEmailValidator.verify("duplicate_test@gmail.com");
     }
 
     private User signUp(){

@@ -4,10 +4,10 @@ import com.goonmeonity.core.validator.ValidatorWithError;
 import com.goonmeonity.domain.repository.user.UserRepository;
 import com.goonmeonity.domain.service.user.error.EmailIsAlreadyExistError;
 
-public class CheckDuplicateUserEmail extends ValidatorWithError<String> {
+public class CheckDuplicateUserEmailValidator extends ValidatorWithError<String> {
     private UserRepository userRepository;
 
-    public CheckDuplicateUserEmail(UserRepository userRepository) {
+    public CheckDuplicateUserEmailValidator(UserRepository userRepository) {
         super(new EmailIsAlreadyExistError());
         this.userRepository = userRepository;
     }
