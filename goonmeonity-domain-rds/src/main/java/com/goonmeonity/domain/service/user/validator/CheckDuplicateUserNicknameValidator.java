@@ -4,10 +4,10 @@ import com.goonmeonity.core.validator.ValidatorWithError;
 import com.goonmeonity.domain.repository.user.UserRepository;
 import com.goonmeonity.domain.service.user.error.NicknameIsAlreadyExistError;
 
-public class CheckDuplicateUserNickname extends ValidatorWithError<String> {
+public class CheckDuplicateUserNicknameValidator extends ValidatorWithError<String> {
     private UserRepository userRepository;
 
-    public CheckDuplicateUserNickname(UserRepository userRepository) {
+    public CheckDuplicateUserNicknameValidator(UserRepository userRepository) {
         super(new NicknameIsAlreadyExistError());
         this.userRepository = userRepository;
     }
