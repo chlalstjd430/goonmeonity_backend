@@ -3,7 +3,9 @@ package com.goonmeonity.external.api.controller;
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.external.api.error.user.UserDoesNotHavePermission;
 import com.goonmeonity.external.api.request.user.CreateDischargeRequest;
+import com.goonmeonity.external.api.request.user.RegisterInstallmentSavingsInfoRequest;
 import com.goonmeonity.external.api.response.user.DischargeInfoResponse;
+import com.goonmeonity.external.api.response.user.InstallmentSavingsInfoResponse;
 import com.goonmeonity.external.api.service.AuthService;
 import com.goonmeonity.external.api.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +26,7 @@ public class UserController {
     public DischargeInfoResponse registerDischargeInfo(
             @RequestHeader String accessToken,
             @PathVariable long userId,
-            @RequestBody CreateDischargeRequest createDischargeRequest
+            CreateDischargeRequest createDischargeRequest
             ){
         User user = checkUserId(accessToken, userId);
 
@@ -38,6 +40,19 @@ public class UserController {
         User user = checkUserId(accessToken, userId);
 
         return userService.getDischargeInfo(user);
+    }
+
+    @ApiOperation("적금 정보 추가하기")
+    @PostMapping("/{userId}/installment-savings")
+    @ResponseStatus(HttpStatus.OK)
+    public InstallmentSavingsInfoResponse registerInstallmentSavings(
+            @RequestHeader String accessToken,
+            @PathVariable long userId,
+            RegisterInstallmentSavingsInfoRequest registerInstallmentSavingsInfoRequest
+    ){
+        User user = checkUserId(accessToken, userId);
+
+        return userService.registerInstallmentSavingsInfo(user, registerInstallmentSavingsInfoRequest);
     }
 
     private User checkUserId(String accessToken, long userId){
