@@ -16,9 +16,9 @@ public class CreateDischargeRequest {
 
     private MilitaryAffiliate militaryAffiliate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyyMMdd")
     private LocalDate enlistmentDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyyMMdd")
     private LocalDate dischargeDate;
 }

@@ -17,9 +17,9 @@ public class RegisterInstallmentSavingsInfoRequest {
 
     private int paymentDay;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyyMMdd")
     private LocalDate startDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyyMMdd")
     private LocalDate dueDate;
 }
