@@ -8,13 +8,13 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class CreateDischargeResponse {
+public class DischargeInfoResponse {
     private MilitaryStatus militaryStatus;
     private MilitaryAffiliate militaryAffiliate;
     private LocalDate enlistmentDate;
     private LocalDate dischargeDate;
 
-    public CreateDischargeResponse(UserDischargeInfo userDischargeInfo) {
+    public DischargeInfoResponse(UserDischargeInfo userDischargeInfo) {
         this.militaryStatus = userDischargeInfo.getMilitaryStatus();
         this.militaryAffiliate = userDischargeInfo.getMilitaryAffiliate();
         this.enlistmentDate = userDischargeInfo.getEnlistmentDate();
