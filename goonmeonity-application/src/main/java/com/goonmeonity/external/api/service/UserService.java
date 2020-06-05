@@ -8,8 +8,7 @@ import com.goonmeonity.domain.service.user.error.UserDoesNotHaveDischargeInfoErr
 import com.goonmeonity.domain.service.user.function.FindUserDischargeInfoByUserIdFunction;
 import com.goonmeonity.domain.service.user.function.SaveUserDischargeInfoFunction;
 import com.goonmeonity.external.api.request.user.CreateDischargeRequest;
-import com.goonmeonity.external.api.response.user.CreateDischargeResponse;
-import lombok.RequiredArgsConstructor;
+import com.goonmeonity.external.api.response.user.DischargeInfoResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,7 +27,7 @@ public class UserService {
         this.findUserDischargeInfoByUserIdFunction = new FindUserDischargeInfoByUserIdFunction(userDischargeInfoRepository);
     }
 
-    public CreateDischargeResponse registerDischargeInfo(CreateDischargeRequest createDischargeRequest, User user){
+    public DischargeInfoResponse registerDischargeInfo(CreateDischargeRequest createDischargeRequest, User user){
         UserDischargeInfo dischargeInfo;
 
         try {
@@ -49,6 +48,12 @@ public class UserService {
         UserDischargeInfo userDischargeInfo = saveUserDischargeInfoFunction.apply(dischargeInfo);
 
 
-        return new CreateDischargeResponse(userDischargeInfo);
+        return new DischargeInfoResponse(userDischargeInfo);
+    }
+
+    public DischargeInfoResponse getDischargeInfo(User user){
+        UserDischargeInfo dischargeInfo = findUserDischargeInfoByUserIdFunction.apply(user.getId());
+
+        return new DischargeInfoResponse(dischargeInfo);
     }
 }
