@@ -6,15 +6,19 @@ import com.goonmeonity.domain.entity.user.UserInstallmentSavings;
 import com.goonmeonity.domain.repository.user.UserDischargeInfoRepository;
 import com.goonmeonity.domain.repository.user.UserInstallmentSavingsRepository;
 import com.goonmeonity.domain.repository.user.UserRepository;
+import com.goonmeonity.domain.service.user.dto.InstallmentSavingsIdAndUserId;
+import com.goonmeonity.domain.service.user.dto.SimpleInstallmentSavings;
 import com.goonmeonity.domain.service.user.error.UserDoesNotHaveDischargeInfoError;
-import com.goonmeonity.domain.service.user.function.FindUserDischargeInfoByUserIdFunction;
-import com.goonmeonity.domain.service.user.function.SaveUserDischargeInfoFunction;
-import com.goonmeonity.domain.service.user.function.SaveUserInstallmentSavingsFunction;
+import com.goonmeonity.domain.service.user.function.*;
 import com.goonmeonity.external.api.request.user.CreateDischargeRequest;
-import com.goonmeonity.external.api.request.user.RegisterInstallmentSavingsInfoRequest;
+import com.goonmeonity.external.api.request.user.RegisterInstallmentSavingsRequest;
 import com.goonmeonity.external.api.response.user.DischargeInfoResponse;
-import com.goonmeonity.external.api.response.user.InstallmentSavingsInfoResponse;
+import com.goonmeonity.external.api.response.user.InstallmentSavingsResponse;
+import com.goonmeonity.external.api.response.user.InstallmentSavingsListResponse;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -25,6 +29,8 @@ public class UserService {
     private final SaveUserDischargeInfoFunction saveUserDischargeInfoFunction;
     private final FindUserDischargeInfoByUserIdFunction findUserDischargeInfoByUserIdFunction;
     private final SaveUserInstallmentSavingsFunction saveUserInstallmentSavingsFunction;
+    private final FindUserInstallmentSavingsByUserIdFunction findUserInstallmentSavingsByUserIdFunction;
+    private final FindUserInstallmentSavingsByIdAndUserIdFunction findUserInstallmentSavingsByIdAndUserIdFunction;
 
     public UserService(
             UserRepository userRepository,
@@ -38,6 +44,8 @@ public class UserService {
         this.saveUserDischargeInfoFunction = new SaveUserDischargeInfoFunction(userDischargeInfoRepository);
         this.findUserDischargeInfoByUserIdFunction = new FindUserDischargeInfoByUserIdFunction(userDischargeInfoRepository);
         this.saveUserInstallmentSavingsFunction = new SaveUserInstallmentSavingsFunction(userInstallmentSavingsRepository);
+        this.findUserInstallmentSavingsByUserIdFunction = new FindUserInstallmentSavingsByUserIdFunction(userInstallmentSavingsRepository);
+        this.findUserInstallmentSavingsByIdAndUserIdFunction = new FindUserInstallmentSavingsByIdAndUserIdFunction(userInstallmentSavingsRepository);
     }
 
     public DischargeInfoResponse registerDischargeInfo(CreateDischargeRequest createDischargeRequest, User user){
@@ -70,7 +78,7 @@ public class UserService {
         return new DischargeInfoResponse(dischargeInfo);
     }
 
-    public InstallmentSavingsInfoResponse registerInstallmentSavingsInfo(User user, RegisterInstallmentSavingsInfoRequest request){
+    public InstallmentSavingsResponse registerInstallmentSavings(User user, RegisterInstallmentSavingsRequest request){
         UserInstallmentSavings userInstallmentSavings = saveUserInstallmentSavingsFunction.apply(
                 UserInstallmentSavings.builder()
                 .user(user)
@@ -83,6 +91,23 @@ public class UserService {
                 .build()
         );
 
-        return new InstallmentSavingsInfoResponse(userInstallmentSavings);
+        return new InstallmentSavingsResponse(new SimpleInstallmentSavings(userInstallmentSavings));
+    }
+
+    public InstallmentSavingsListResponse getInstallmentSavingsList(User user){
+        List<UserInstallmentSavings> userInstallmentSavingsList = findUserInstallmentSavingsByUserIdFunction.apply(user.getId());
+        List<SimpleInstallmentSavings> simpleInstallmentSavingsList = new ArrayList<>();
+
+        userInstallmentSavingsList.forEach(it -> simpleInstallmentSavingsList.add(new SimpleInstallmentSavings(it)));
+
+        return new InstallmentSavingsListResponse(simpleInstallmentSavingsList);
+    }
+
+    public InstallmentSavingsResponse getInstallmentSavings(User user, long installmentSavingsId){
+        UserInstallmentSavings userInstallmentSavings = findUserInstallmentSavingsByIdAndUserIdFunction.apply(
+                new InstallmentSavingsIdAndUserId(installmentSavingsId, user.getId())
+        );
+
+        return new InstallmentSavingsResponse(new SimpleInstallmentSavings(userInstallmentSavings));
     }
 }

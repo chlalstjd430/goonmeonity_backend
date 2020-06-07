@@ -1,4 +1,4 @@
-package com.goonmeonity.external.api.response.user;
+package com.goonmeonity.domain.service.user.dto;
 
 import com.goonmeonity.domain.entity.user.UserInstallmentSavings;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class InstallmentSavingsInfoResponse {
+public class SimpleInstallmentSavings {
     private long id;
     private String name;
     private int payment;
@@ -15,7 +15,7 @@ public class InstallmentSavingsInfoResponse {
     private LocalDate startDate;
     private LocalDate dueDate;
 
-    public InstallmentSavingsInfoResponse(UserInstallmentSavings userInstallmentSavings){
+    public SimpleInstallmentSavings(UserInstallmentSavings userInstallmentSavings){
         this.id = userInstallmentSavings.getId();
         this.name = userInstallmentSavings.getName();
         this.payment = userInstallmentSavings.getPayment();
@@ -24,5 +24,4 @@ public class InstallmentSavingsInfoResponse {
         this.startDate = userInstallmentSavings.getStartDate();
         this.dueDate = userInstallmentSavings.getDueDate();
     }
-
 }
