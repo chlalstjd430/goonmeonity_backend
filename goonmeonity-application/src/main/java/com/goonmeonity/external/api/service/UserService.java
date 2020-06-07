@@ -84,6 +84,7 @@ public class UserService {
                 .user(user)
                 .name(request.getName())
                 .payment(request.getPayment())
+                .amount(request.getAmount())
                 .interestRate(request.getInterestRate())
                 .startDate(request.getStartDate())
                 .dueDate(request.getDueDate())

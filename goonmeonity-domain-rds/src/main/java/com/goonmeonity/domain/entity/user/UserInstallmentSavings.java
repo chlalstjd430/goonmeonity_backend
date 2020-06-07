@@ -30,6 +30,9 @@ public class UserInstallmentSavings extends BaseTimeEntity {
     private int payment;
 
     @Column(nullable = true)
+    private int amount;
+
+    @Column(nullable = true)
     private int paymentDay;
 
     @Column(nullable = true)
