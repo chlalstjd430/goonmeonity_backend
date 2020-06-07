@@ -11,7 +11,7 @@ import com.goonmeonity.domain.service.user.dto.SimpleInstallmentSavings;
 import com.goonmeonity.domain.service.user.error.UserDoesNotHaveDischargeInfoError;
 import com.goonmeonity.domain.service.user.function.*;
 import com.goonmeonity.external.api.request.user.CreateDischargeRequest;
-import com.goonmeonity.external.api.request.user.RegisterInstallmentSavingsRequest;
+import com.goonmeonity.external.api.request.user.SaveInstallmentSavingsRequest;
 import com.goonmeonity.external.api.response.user.DeleteInstallmentSavingsResponse;
 import com.goonmeonity.external.api.response.user.DischargeInfoResponse;
 import com.goonmeonity.external.api.response.user.InstallmentSavingsResponse;
@@ -82,7 +82,7 @@ public class UserService {
         return new DischargeInfoResponse(dischargeInfo);
     }
 
-    public InstallmentSavingsResponse registerInstallmentSavings(User user, RegisterInstallmentSavingsRequest request){
+    public InstallmentSavingsResponse registerInstallmentSavings(User user, SaveInstallmentSavingsRequest request){
         UserInstallmentSavings userInstallmentSavings = saveUserInstallmentSavingsFunction.apply(
                 UserInstallmentSavings.builder()
                 .user(user)
@@ -112,6 +112,23 @@ public class UserService {
         UserInstallmentSavings userInstallmentSavings = findUserInstallmentSavingsByIdAndUserIdFunction.apply(
                 new InstallmentSavingsIdAndUserId(installmentSavingsId, user.getId())
         );
+
+        return new InstallmentSavingsResponse(new SimpleInstallmentSavings(userInstallmentSavings));
+    }
+
+    public InstallmentSavingsResponse updateInstallmentSavings(User user, long installmentSavingsId, SaveInstallmentSavingsRequest request){
+        UserInstallmentSavings userInstallmentSavings = findUserInstallmentSavingsByIdAndUserIdFunction.apply(
+                new InstallmentSavingsIdAndUserId(installmentSavingsId, user.getId())
+        );
+        userInstallmentSavings.setAmount(request.getAmount());
+        userInstallmentSavings.setName(request.getName());
+        userInstallmentSavings.setPayment(request.getPayment());
+        userInstallmentSavings.setInterestRate(request.getInterestRate());
+        userInstallmentSavings.setPaymentDay(request.getPaymentDay());
+        userInstallmentSavings.setStartDate(request.getStartDate());
+        userInstallmentSavings.setDueDate(request.getDueDate());
+
+        UserInstallmentSavings updatedInstallmentSavings = saveUserInstallmentSavingsFunction.apply(userInstallmentSavings);
 
         return new InstallmentSavingsResponse(new SimpleInstallmentSavings(userInstallmentSavings));
     }

@@ -40,4 +40,32 @@ public class UserInstallmentSavings extends BaseTimeEntity {
 
     @Column(nullable = true)
     private LocalDate dueDate;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public void setPayment(int payment) {
+        this.payment = payment;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void setPaymentDay(int paymentDay) {
+        this.paymentDay = paymentDay;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
 }
