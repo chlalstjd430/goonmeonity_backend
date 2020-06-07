@@ -3,9 +3,10 @@ package com.goonmeonity.external.api.controller;
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.external.api.error.user.UserDoesNotHavePermission;
 import com.goonmeonity.external.api.request.user.CreateDischargeRequest;
-import com.goonmeonity.external.api.request.user.RegisterInstallmentSavingsInfoRequest;
+import com.goonmeonity.external.api.request.user.RegisterInstallmentSavingsRequest;
 import com.goonmeonity.external.api.response.user.DischargeInfoResponse;
-import com.goonmeonity.external.api.response.user.InstallmentSavingsInfoResponse;
+import com.goonmeonity.external.api.response.user.InstallmentSavingsListResponse;
+import com.goonmeonity.external.api.response.user.InstallmentSavingsResponse;
 import com.goonmeonity.external.api.service.AuthService;
 import com.goonmeonity.external.api.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -45,14 +46,36 @@ public class UserController {
     @ApiOperation("적금 정보 추가하기")
     @PostMapping("/{userId}/installment-savings")
     @ResponseStatus(HttpStatus.OK)
-    public InstallmentSavingsInfoResponse registerInstallmentSavings(
+    public InstallmentSavingsResponse registerInstallmentSavings(
             @RequestHeader String accessToken,
             @PathVariable long userId,
-            RegisterInstallmentSavingsInfoRequest registerInstallmentSavingsInfoRequest
+            RegisterInstallmentSavingsRequest registerInstallmentSavingsRequest
     ){
         User user = checkUserId(accessToken, userId);
 
-        return userService.registerInstallmentSavingsInfo(user, registerInstallmentSavingsInfoRequest);
+        return userService.registerInstallmentSavings(user, registerInstallmentSavingsRequest);
+    }
+
+    @ApiOperation("적금 정보 리스트 조회")
+    @GetMapping("/{userId}/installment-savings")
+    @ResponseStatus(HttpStatus.OK)
+    public InstallmentSavingsListResponse getInstallmentSavingsList(@RequestHeader String accessToken, @PathVariable long userId){
+        User user = checkUserId(accessToken, userId);
+
+        return userService.getInstallmentSavingsList(user);
+    }
+
+    @ApiOperation("적금 정보 조회")
+    @GetMapping("/{userId}/installment-savings/{installmentSavingsId}")
+    @ResponseStatus(HttpStatus.OK)
+    public InstallmentSavingsResponse getInstallmentSavings(
+            @RequestHeader String accessToken,
+            @PathVariable long userId,
+            @PathVariable long installmentSavingsId
+    ){
+        User user = checkUserId(accessToken, userId);
+
+        return userService.getInstallmentSavings(user, installmentSavingsId);
     }
 
     private User checkUserId(String accessToken, long userId){
