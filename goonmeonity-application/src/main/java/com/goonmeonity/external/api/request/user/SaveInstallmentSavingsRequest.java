@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
-public class RegisterInstallmentSavingsRequest {
+public class SaveInstallmentSavingsRequest {
     private String name;
 
     private int payment;

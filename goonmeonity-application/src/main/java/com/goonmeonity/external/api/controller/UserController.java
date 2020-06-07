@@ -3,7 +3,7 @@ package com.goonmeonity.external.api.controller;
 import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.external.api.error.user.UserDoesNotHavePermission;
 import com.goonmeonity.external.api.request.user.CreateDischargeRequest;
-import com.goonmeonity.external.api.request.user.RegisterInstallmentSavingsRequest;
+import com.goonmeonity.external.api.request.user.SaveInstallmentSavingsRequest;
 import com.goonmeonity.external.api.response.user.DeleteInstallmentSavingsResponse;
 import com.goonmeonity.external.api.response.user.DischargeInfoResponse;
 import com.goonmeonity.external.api.response.user.InstallmentSavingsListResponse;
@@ -50,11 +50,11 @@ public class UserController {
     public InstallmentSavingsResponse registerInstallmentSavings(
             @RequestHeader String accessToken,
             @PathVariable long userId,
-            RegisterInstallmentSavingsRequest registerInstallmentSavingsRequest
+            SaveInstallmentSavingsRequest saveInstallmentSavingsRequest
     ){
         User user = checkUserId(accessToken, userId);
 
-        return userService.registerInstallmentSavings(user, registerInstallmentSavingsRequest);
+        return userService.registerInstallmentSavings(user, saveInstallmentSavingsRequest);
     }
 
     @ApiOperation("적금 정보 리스트 조회")
@@ -77,6 +77,20 @@ public class UserController {
         User user = checkUserId(accessToken, userId);
 
         return userService.getInstallmentSavings(user, installmentSavingsId);
+    }
+
+    @ApiOperation("적금 정보 수정")
+    @PutMapping("/{userId}/installment-savings/{installmentSavingsId}")
+    @ResponseStatus(HttpStatus.OK)
+    public InstallmentSavingsResponse updateInstallmentSavings(
+            @RequestHeader String accessToken,
+            @PathVariable long userId,
+            @PathVariable long installmentSavingsId,
+            SaveInstallmentSavingsRequest saveInstallmentSavingsRequest
+    ){
+        User user = checkUserId(accessToken, userId);
+
+        return userService.updateInstallmentSavings(user, installmentSavingsId, saveInstallmentSavingsRequest);
     }
 
     @ApiOperation("적급 정보 삭제")
