@@ -12,10 +12,12 @@ import com.goonmeonity.domain.service.user.error.UserDoesNotHaveDischargeInfoErr
 import com.goonmeonity.domain.service.user.function.*;
 import com.goonmeonity.external.api.request.user.CreateDischargeRequest;
 import com.goonmeonity.external.api.request.user.RegisterInstallmentSavingsRequest;
+import com.goonmeonity.external.api.response.user.DeleteInstallmentSavingsResponse;
 import com.goonmeonity.external.api.response.user.DischargeInfoResponse;
 import com.goonmeonity.external.api.response.user.InstallmentSavingsResponse;
 import com.goonmeonity.external.api.response.user.InstallmentSavingsListResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ public class UserService {
     private final SaveUserInstallmentSavingsFunction saveUserInstallmentSavingsFunction;
     private final FindUserInstallmentSavingsByUserIdFunction findUserInstallmentSavingsByUserIdFunction;
     private final FindUserInstallmentSavingsByIdAndUserIdFunction findUserInstallmentSavingsByIdAndUserIdFunction;
+    private final DeleteInstallmentSavingsByIdAndUserIdFunction deleteInstallmentSavingsByIdAndUserIdFunction;
 
     public UserService(
             UserRepository userRepository,
@@ -46,6 +49,7 @@ public class UserService {
         this.saveUserInstallmentSavingsFunction = new SaveUserInstallmentSavingsFunction(userInstallmentSavingsRepository);
         this.findUserInstallmentSavingsByUserIdFunction = new FindUserInstallmentSavingsByUserIdFunction(userInstallmentSavingsRepository);
         this.findUserInstallmentSavingsByIdAndUserIdFunction = new FindUserInstallmentSavingsByIdAndUserIdFunction(userInstallmentSavingsRepository);
+        this.deleteInstallmentSavingsByIdAndUserIdFunction = new DeleteInstallmentSavingsByIdAndUserIdFunction(userInstallmentSavingsRepository);
     }
 
     public DischargeInfoResponse registerDischargeInfo(CreateDischargeRequest createDischargeRequest, User user){
@@ -110,5 +114,14 @@ public class UserService {
         );
 
         return new InstallmentSavingsResponse(new SimpleInstallmentSavings(userInstallmentSavings));
+    }
+
+    @Transactional
+    public DeleteInstallmentSavingsResponse deleteInstallmentSavings(User user, long installmentSavingsId){
+        InstallmentSavingsIdAndUserId installmentSavingsIdAndUserId = new InstallmentSavingsIdAndUserId(installmentSavingsId, user.getId());
+        UserInstallmentSavings userInstallmentSavings = findUserInstallmentSavingsByIdAndUserIdFunction.apply(installmentSavingsIdAndUserId);
+        deleteInstallmentSavingsByIdAndUserIdFunction.accept(installmentSavingsIdAndUserId);
+
+        return new DeleteInstallmentSavingsResponse(true);
     }
 }

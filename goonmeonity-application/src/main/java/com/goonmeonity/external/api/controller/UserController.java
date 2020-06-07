@@ -4,6 +4,7 @@ import com.goonmeonity.domain.entity.user.User;
 import com.goonmeonity.external.api.error.user.UserDoesNotHavePermission;
 import com.goonmeonity.external.api.request.user.CreateDischargeRequest;
 import com.goonmeonity.external.api.request.user.RegisterInstallmentSavingsRequest;
+import com.goonmeonity.external.api.response.user.DeleteInstallmentSavingsResponse;
 import com.goonmeonity.external.api.response.user.DischargeInfoResponse;
 import com.goonmeonity.external.api.response.user.InstallmentSavingsListResponse;
 import com.goonmeonity.external.api.response.user.InstallmentSavingsResponse;
@@ -28,7 +29,7 @@ public class UserController {
             @RequestHeader String accessToken,
             @PathVariable long userId,
             CreateDischargeRequest createDischargeRequest
-            ){
+    ){
         User user = checkUserId(accessToken, userId);
 
         return userService.registerDischargeInfo(createDischargeRequest, user);
@@ -76,6 +77,19 @@ public class UserController {
         User user = checkUserId(accessToken, userId);
 
         return userService.getInstallmentSavings(user, installmentSavingsId);
+    }
+
+    @ApiOperation("적급 정보 삭제")
+    @DeleteMapping("/{userId}/installment-savings/{installmentSavingsId}")
+    @ResponseStatus(HttpStatus.OK)
+    public DeleteInstallmentSavingsResponse deleteInstallmentSavings(
+            @RequestHeader String accessToken,
+            @PathVariable long userId,
+            @PathVariable long installmentSavingsId
+    ){
+        User user = checkUserId(accessToken, userId);
+
+        return userService.deleteInstallmentSavings(user, installmentSavingsId);
     }
 
     private User checkUserId(String accessToken, long userId){

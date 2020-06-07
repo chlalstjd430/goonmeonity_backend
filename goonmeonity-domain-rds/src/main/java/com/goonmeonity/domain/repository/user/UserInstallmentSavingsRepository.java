@@ -13,4 +13,6 @@ public interface UserInstallmentSavingsRepository extends ExtendRepository<UserI
     List<UserInstallmentSavings> findAllByUserId(long userId);
 
     Optional<UserInstallmentSavings> findByIdAndUserId(long id, long userId);
+
+    void deleteByIdAndUserId(long id, long userId);
 }
