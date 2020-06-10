@@ -6,6 +6,7 @@ import com.goonmeonity.external.api.request.board.CreateBoardRequest;
 import com.goonmeonity.external.api.request.board.SearchBoardsRequest;
 import com.goonmeonity.external.api.request.board.UpdateBoardRequest;
 import com.goonmeonity.external.api.response.board.BoardInfoResponse;
+import com.goonmeonity.external.api.response.board.BoardRecommendationResponse;
 import com.goonmeonity.external.api.response.board.DeleteBoardResponse;
 import com.goonmeonity.external.api.response.board.SearchBoardsResponse;
 import com.goonmeonity.external.api.service.AuthService;
@@ -25,7 +26,7 @@ public class BoardController {
         this.authService = authService;
     }
 
-    @ApiOperation("게시판 작성")
+    @ApiOperation("게시글 작성")
     @PostMapping("/board")
     @ResponseStatus(HttpStatus.CREATED)
     public BoardInfoResponse writeBoard(
@@ -37,7 +38,7 @@ public class BoardController {
         return boardService.postBoard(user , createBoardRequest);
     }
 
-    @ApiOperation("게시판 검색")
+    @ApiOperation("게시글 검색")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public SearchBoardsResponse searchBoards(
@@ -50,7 +51,7 @@ public class BoardController {
         );
     }
 
-    @ApiOperation("게시판 수정")
+    @ApiOperation("게시글 수정")
     @PutMapping("/{boardId}")
     @ResponseStatus(HttpStatus.OK)
     public BoardInfoResponse updateBoard(
@@ -63,7 +64,7 @@ public class BoardController {
         return boardService.updateBoard(boardId, user.getId(), updateBoardRequest);
     }
 
-    @ApiOperation("게시판 삭제")
+    @ApiOperation("게시글 삭제")
     @DeleteMapping("/{boardId}")
     @ResponseStatus(HttpStatus.OK)
     public DeleteBoardResponse deleteBoard(
@@ -73,5 +74,29 @@ public class BoardController {
         User user = authService.getUserByAccessToken(accessToken);
 
         return boardService.deleteBoard(user.getId(), boardId);
+    }
+
+    @ApiOperation("게시글 추천")
+    @PostMapping("/{boardId}/recommendation")
+    @ResponseStatus(HttpStatus.CREATED)
+    public BoardRecommendationResponse recommendBoard(
+            @RequestHeader String accessToken,
+            @PathVariable Long boardId
+    ){
+        User user = authService.getUserByAccessToken(accessToken);
+
+        return boardService.recommendBoard(user.getId(), boardId);
+    }
+
+    @ApiOperation("게시글 추천 취소")
+    @DeleteMapping("/{boardId}/recommendation")
+    @ResponseStatus(HttpStatus.OK)
+    public BoardRecommendationResponse unRecommendBoard(
+            @RequestHeader String accessToken,
+            @PathVariable Long boardId
+    ){
+        User user = authService.getUserByAccessToken(accessToken);
+
+        return boardService.unRecommendBoard(user.getId(), boardId);
     }
 }
