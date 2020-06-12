@@ -33,6 +33,7 @@ public class BoardService {
     private final SearchBoardsByCategoryFunction searchBoardsByCategoryFunction;
     private final FindBoardByIdAndAuthorIdFunction findBoardByIdAndAuthorIdFunction;
     private final FindPopularBoardsFunction findPopularBoardsFunction;
+    private final FindBoardByIdFunction findBoardByIdFunction;
     private final DeleteBoardByIdFunction deleteBoardByIdFunction;
     private final SaveBoardRecommendationFunction saveBoardRecommendationFunction;
     private final FindBoardRecommendationByBoardIdFunction findBoardRecommendationByBoardIdFunction;
@@ -50,6 +51,7 @@ public class BoardService {
         this.searchBoardsByCategoryFunction = new SearchBoardsByCategoryFunction(boardRepository);
         this.findBoardByIdAndAuthorIdFunction = new FindBoardByIdAndAuthorIdFunction(boardRepository);
         this.findPopularBoardsFunction = new FindPopularBoardsFunction(boardRepository);
+        this.findBoardByIdFunction = new FindBoardByIdFunction(boardRepository);
         this.deleteBoardByIdFunction = new DeleteBoardByIdFunction(boardRepository);
         this.saveBoardRecommendationFunction = new SaveBoardRecommendationFunction(boardRecommendationRepository);
         this.checkExistBoardValidator = new CheckExistBoardValidator(boardRepository);
@@ -122,6 +124,13 @@ public class BoardService {
                 .currentPage(boards.getNumber())
                 .boardsCount(boards.getTotalElements())
                 .build();
+   }
+
+    public BoardInfoResponse getBoard(long boardId){
+        Board board = findBoardByIdFunction.apply(boardId);
+        int recommendCount = findBoardRecommendationByBoardIdFunction.apply(board.getId()).size();
+
+        return new BoardInfoResponse(new BoardInfo(board, recommendCount));
     }
 
     public BoardInfoResponse updateBoard(Long boardId, Long userId, UpdateBoardRequest updateBoardRequest){

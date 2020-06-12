@@ -50,6 +50,12 @@ public class BoardController {
                 new SearchBoardsRequest(boardCategory,keyword,currentPage)
         );
     }
+    @ApiOperation("게시글 상세 정보")
+    @GetMapping("/{boardId}")
+    @ResponseStatus(HttpStatus.OK)
+    public BoardInfoResponse getBoard(@PathVariable long boardId){
+        return boardService.getBoard(boardId);
+    }
 
     @ApiOperation("인기 게시글 얻기")
     @GetMapping("/popular")
