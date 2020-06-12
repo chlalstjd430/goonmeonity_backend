@@ -32,6 +32,7 @@ public class BoardService {
     private final SaveBoardFunction saveBoardFunction;
     private final SearchBoardsByCategoryFunction searchBoardsByCategoryFunction;
     private final FindBoardByIdAndAuthorIdFunction findBoardByIdAndAuthorIdFunction;
+    private final FindPopularBoardsFunction findPopularBoardsFunction;
     private final DeleteBoardByIdFunction deleteBoardByIdFunction;
     private final SaveBoardRecommendationFunction saveBoardRecommendationFunction;
     private final FindBoardRecommendationByBoardIdFunction findBoardRecommendationByBoardIdFunction;
@@ -48,6 +49,7 @@ public class BoardService {
         this.saveBoardFunction = new SaveBoardFunction(boardRepository);
         this.searchBoardsByCategoryFunction = new SearchBoardsByCategoryFunction(boardRepository);
         this.findBoardByIdAndAuthorIdFunction = new FindBoardByIdAndAuthorIdFunction(boardRepository);
+        this.findPopularBoardsFunction = new FindPopularBoardsFunction(boardRepository);
         this.deleteBoardByIdFunction = new DeleteBoardByIdFunction(boardRepository);
         this.saveBoardRecommendationFunction = new SaveBoardRecommendationFunction(boardRecommendationRepository);
         this.checkExistBoardValidator = new CheckExistBoardValidator(boardRepository);
@@ -95,6 +97,27 @@ public class BoardService {
 
         return SearchBoardsResponse.builder()
                 .boardsInfo(boardsInfo)
+                .totalPage(boards.getTotalPages())
+                .currentPage(boards.getNumber())
+                .boardsCount(boards.getTotalElements())
+                .build();
+    }
+
+    public SearchBoardsResponse getPopularBoards(int page){
+        Page<Board> boards = findPopularBoardsFunction.apply(page);
+        List<BoardInfo> boardInfos = new ArrayList<>();
+
+        boards.getContent().forEach(board ->
+                boardInfos.add(
+                        new BoardInfo(
+                                board,
+                                findBoardRecommendationByBoardIdFunction.apply(board.getId()).size()
+                        )
+                )
+        );
+
+        return SearchBoardsResponse.builder()
+                .boardsInfo(boardInfos)
                 .totalPage(boards.getTotalPages())
                 .currentPage(boards.getNumber())
                 .boardsCount(boards.getTotalElements())
