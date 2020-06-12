@@ -57,6 +57,13 @@ public class BoardController {
         return boardService.getBoard(boardId);
     }
 
+    @ApiOperation("인기 게시글 얻기")
+    @GetMapping("/popular")
+    @ResponseStatus(HttpStatus.OK)
+    public SearchBoardsResponse getPopularBoards(@RequestParam(required = false, defaultValue = "0")  int currentPage){
+        return boardService.getPopularBoards(currentPage);
+    }
+
     @ApiOperation("게시글 수정")
     @PutMapping("/{boardId}")
     @ResponseStatus(HttpStatus.OK)
