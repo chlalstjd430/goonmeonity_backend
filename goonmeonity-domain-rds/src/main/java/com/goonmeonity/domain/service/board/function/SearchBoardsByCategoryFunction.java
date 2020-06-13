@@ -20,7 +20,7 @@ public class SearchBoardsByCategoryFunction implements Function<SearchBoardInfo,
                 searchBoardInfo.getBoardCategory(),
                 searchBoardInfo.getKeyword(),
                 searchBoardInfo.getKeyword(),
-                PageRequest.of(searchBoardInfo.getPage(), 10)
+                PageRequest.of(searchBoardInfo.getPage(), 10, Sort.by("createdDate").descending())
         );
     }
 }
