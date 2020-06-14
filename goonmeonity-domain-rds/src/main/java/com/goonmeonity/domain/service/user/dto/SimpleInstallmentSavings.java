@@ -1,5 +1,6 @@
 package com.goonmeonity.domain.service.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.goonmeonity.domain.entity.user.UserInstallmentSavings;
 import lombok.Getter;
 
@@ -13,7 +14,11 @@ public class SimpleInstallmentSavings {
     private int amount;
     private double interestRate;
     private int paymentDay;
+
+    @JsonFormat(pattern = "yyyyMMdd")
     private LocalDate startDate;
+
+    @JsonFormat(pattern = "yyyyMMdd")
     private LocalDate dueDate;
 
     public SimpleInstallmentSavings(UserInstallmentSavings userInstallmentSavings){
